@@ -33,9 +33,9 @@ $(document).ready(function(){
         if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
           closest.push(vehicles[i]);
           console.log(closest[0].route_id);
-          $('#route-name').text(closest[0].route_id);
         }
       }
+      $('#route-name').text(closest[0].route_id);
     });
   }
 
