@@ -1,42 +1,8 @@
 class Muni < ActiveRecord::Base
 
     has_many :reports
-
-    def smell_score
-      ratings = []
-      self.reports.each do |report|
-        ratings << report.smell_rating
-      end
-      if ratings.length != 0
-          smell_average = ratings.inject(:+)/ratings.length
-      else
-        return 2.4
-      end
-    end
-
-    def clean_score
-      ratings = []
-      self.reports.each do |report|
-        ratings << report.clean_rating
-      end
-      if ratings.length != 0
-          clean_average = ratings.inject(:+)/ratings.length
-      else
-        return 3.2
-      end
-    end
-
-    def driver_score
-      ratings = []
-      self.reports.each do |report|
-        ratings << report.driver_rating
-      end
-      if ratings.length != 0
-          driver_average = ratings.inject(:+)/ratings.length
-      else
-        return 2.9
-      end
-    end
+    validates :route_name, uniqueness: true
+    before_save :default_avgs
 
     def update_avg_ratings
         num = 0
@@ -66,4 +32,20 @@ class Muni < ActiveRecord::Base
         update_attributes(avg_smelling_rating: avg_smell_rating, avg_clean_rating: avg_clean_rating, avg_driver_rating: avg_driver_rating)
     end
 
+    class << self
+        def sorted_munis
+            munis = Muni.all 
+            munis.sort do |muni1, muni2| 
+                muni1_avg_sum = muni1.avg_smelling_rating + muni1.avg_clean_rating + muni1.avg_driver_rating
+                muni2_avg_sum = muni2.avg_smelling_rating + muni2.avg_clean_rating + muni2.avg_driver_rating
+                muni2_avg_sum - muni1_avg_sum
+            end
+        end
+    end
+
+    def default_avgs
+        avg_smelling_rating ||= 0
+        avg_clean_rating ||= 0
+        avg_driver_rating ||= 0
+    end
 end

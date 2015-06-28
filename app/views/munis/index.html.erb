@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+a<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -85,6 +85,8 @@
         <%= form_tag({controller: "munis", action: "show"}, id: "report-form") do %>
             <div class="row">
             <div class="row">
+                <%= hidden_field_tag(:route_name, '10') %>
+
                 <div class="col-xs-3">
                     <%= image_tag("Stink_01.png", width: "65%", height: "65%") %>
                 </div>

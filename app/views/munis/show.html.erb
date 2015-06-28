@@ -56,7 +56,7 @@
     <div class="jumbotron" align="center">
         <div class="leader">
             <div class="row">
-                    <img src="img/puni-award.png">
+                    <%= image_tag("puni-award.png") %>
                     <h3>PUNI Awards</h3>
 
             </div>
@@ -66,45 +66,55 @@
 
 
     <div class="container" align="center">
-        <img src="img/puni_logo.png" width="100">
+         <%= image_tag("puni_logo.png", width: '100') %>
+
         <h2>Stink Champs</h2>
 
         <!-- Example row of columns -->
         <div class="row">
-                <div class="row" align="left">
-                    <div class="col-xs-1"><h1>38</h1></div>
+                <div class="row">
+                    <div class="col-xs-1"><h1><%= "#{@munis.first.route_name}"%></h1></div>
                     <div class="col-xs-3">
-                        <h3><img src="img/Stink_04.png" width="50"> Stink Avg 4.9</h3>
+                        <h3><%= image_tag("Stink_04.png", width: '50') %><%=  "Stink Avg #{@munis.first.avg_smelling_rating}" %></h3>
                     </div>
                     <div class="col-xs-3">
-                        <h3><img src="img/Filth_05.png" width="50"> Filth Avg 4.9</h3>
+                        <h3><%= image_tag("Filth_05.png", width: '50') %><%=  "Filth Avg #{@munis.first.avg_clean_rating}" %></h3>
                     </div>
                     <div class="col-xs-3">
-                        <h3><img src="img/Driver_04.png" width="50"> Driver Avg 4.9</h3>
+                        <h3><%= image_tag("Driver_04.png", width: '50') %><%=  "Driver Avg #{@munis.first.avg_driver_rating}" %></h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-1"><h1>10</h1></div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Stink_04.png" width="50"> Stink Avg 4.9</h3>
+                    <div class="col-md-1"><h1><%= "#{if @munis.second 
+                        @munis.second.route_name else @munis.first.route_name end}"%></h1></div>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Stink_04.png", width: '50') %>
+                        <%=  "Stink Avg #{if @munis.second
+                            @munis.second.avg_smelling_rating
+                            else @munis.first.avg_smelling_rating end}" %></h3>
                     </div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Filth_05.png" width="50"> Filth Avg 4.9</h3>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Filth_05.png", width: '50') %><%=  "Filth Avg #{if @munis.second 
+                            @munis.second.avg_clean_rating
+                            else @munis.first.avg_clean_rating end}" %></h3>
                     </div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Driver_04.png" width="50"> Driver Avg 4.9</h3>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Driver_04.png", width: '50') %><%=  "Driver Avg #{if @munis.second 
+                            @munis.second.avg_driver_rating
+                            else @munis.first.avg_driver_rating end}" %></h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-1"><h1>N</h1></div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Stink_04.png" width="50"> Stink Avg 4.9</h3>
+                    <div class="col-md-1"><h1><%= "#{third_winner = @munis.third || @munis.second || @munis.first
+                    third_winner.route_name }"%></h1></div>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Stink_04.png", width: '50') %><%=  "Stink Avg #{third_winner.avg_smelling_rating}" %></h3>
                     </div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Filth_05.png" width="50"> Filth Avg 4.9</h3>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Filth_05.png", width: '50') %><%=  "Filth Avg #{third_winner.avg_clean_rating}" %></h3>
                     </div>
-                    <div class="col-md-3">
-                        <h3><img src="img/Driver_04.png" width="50"> Driver Avg 4.9</h3>
+                    <div class="col-xs-3">
+                        <h3><%= image_tag("Driver_04.png", width: '50') %><%=  "Driver Avg #{third_winner.avg_driver_rating}" %></h3>
                     </div>
                 </div>
         </div>
