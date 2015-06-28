@@ -24,8 +24,8 @@
         .bus {
             background-color: gray;
             border-radius: 8px;
-            margin-left: 10px;
-            margin-right: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
             padding: 10px;
         }
         
@@ -57,14 +57,14 @@
         <div class="bus">
             <img src="img/puni_logo.png" width="125">
             <div class="row">
-                <div class="col-md-6" align="center">
+                <div class="col-xs-6" align="center">
                     <div class="window">
                         <h1>38</h1>
                         <h2>Route</h2>
                     </div>
 
                 </div>
-                <div class="col-md-6" align="center">
+                <div class="col-xs-6" align="center">
                     <div class="window">
                         <img src="img/Driver_05.png" width="100">
                         <h2>Driver Mood</h2>
@@ -72,14 +72,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6" align="center">
+                <div class="col-xs-6" align="center">
                     <div class="avg">
                         <img src="img/Stink_05.png" width="50">
                     </div>
                     <br>
                     <h2>Stink Meter</h2>
                 </div>
-                <div class="col-md-6" align="center">
+                <div class="col-xs-6" align="center">
                     <div class="avg">
                         <img src="img/Filth_05.png" width="50">
                     </div>
@@ -99,27 +99,69 @@
         <div class="row">
             <form>
                 <div class="row">
-                    <img src="img/Stink_01.png">
+                  <div class="col-xs-3">
+                    <img src="img/Stink_01.png" width="65%" height="65%">
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Smell</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Stink_05.png" width="65%" height="65%">
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
                     <div id="smellSlider"></div>
-                    <h2>Smell</h2>
+                  </div>
                 </div>
-                <div class="row">
-                    <img src="img/Filth_05.png">
+                </div>
+                </br>
+              <div class="row">
+                  <div class="col-xs-3">
+                    <img src="img/Filth_01.png" width="65%" height="65%">
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Filth</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Filth_05.png" width="65%" height="65%">
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
                     <div id="cleanSlider"></div>
-                    <h2>Filth</h2>
+                  </div>
                 </div>
-                <div class="row">
-                    <img src="img/Driver_01.png">
+                </div>
+                </br>
+              <div class="row">
+                  <div class="col-xs-3">
+                    <img src="img/Driver_01.png" width="65%" height="65%">
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Driver's Mood</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Driver_05.png" width="65%" height="65%">
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
                     <div id="moodSlider"></div>
-                    <h2>Driver's Mood</h2>
+                  </div>
                 </div>
+                </div>
+        </br>
+        <div class="form-group">
+            <h3><label for="comment">Horror story</label></h3>
+            <textarea class="form-control" rows="5" id="comment" placeholder="Add details about any horror stories you experienced on this bus ride."></textarea>
+        </div>
+        
             </form>
         </div>
-
+    
+<button type="button" class="btn btn-primary btn-lg btn-block">Submit your rating</button>
         <hr>
 
         <footer>
-            <p>&copy; Company 2014</p>
+            <p></p>
         </footer>
     </div>
     <!-- /container -->
