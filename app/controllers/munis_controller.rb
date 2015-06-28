@@ -1,18 +1,17 @@
 class MunisController < ApplicationController
 
     def index
-        
+        @report = Report.new
     end
 
     def update
-        @muni = Muni.find_by(route_name: params[:routename])
-        @muni.reports.build(smell_rating: params[:smell], clean_rating: params[:cleanliness], driver_rating: params[:driver])
-        change_ratings(@muni)
-        @muni.save
-        render 'munis/show'
+
     end
 
     def show
-
+        @muni = Muni.find_by(route_name: params[:route_name])
+        @muni.reports.build(smell_rating: params[:smell_rating], clean_rating: params[:clean_rating], driver_rating: params[:driver_rating])
+        @muni.update_avg_ratings
+        @muni.save
     end
 end
