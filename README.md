@@ -4,7 +4,9 @@ _MUNI Stinks...Rate your ride!_
 
 It's now very simple to rate anything from films and music to shared taxi rides and restaurants. Public transport has so far escaped such scrutiny. 
 
-Puni addresses this problem, giving riders of San Francisco public transport ("Muni") the opportunity to rate their experience (in terms of Smell, Cleanliness and Driver mood) and share their Muni horror stories with others. 
+Puni addresses this problem, giving riders of San Francisco public transport ("Muni") the opportunity to rate their experience and share their Muni horror stories with others.
+
+Each ride is rated in terms of Smell, Cleanliness and Driver mood.
 
 Future development
 -------
