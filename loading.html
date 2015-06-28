@@ -29,7 +29,7 @@
             margin-left: 70px;
             margin-bottom: 30px;
             animation-duration: 3s;
-            animation-name: fadeIn;
+            <!-- animation-name: fadeIn; -->
         }
         
         @keyframes fadeIn {
@@ -41,6 +41,24 @@
             opacity: 1;
             }
         }
+
+        .whiff {
+            background-color: #fff;
+            margin-left: 300px;
+            animation-duration: 2s;
+            animation-name: whiffSlidein;
+            margin-top: -215px;
+        }
+        
+        @keyframes whiffSlidein {
+        from {
+            margin-top: -190px;
+            }
+
+        to {
+            margin-top: -215px;
+            }
+        }
         
         h3 {
             text-align: left;
@@ -49,13 +67,14 @@
             color: grey;
             margin-left: -170px;
             font-size: 22px;
-            animation-duration: 1s;
+            margin-top: 140px;
+            animation-duration: 3.2s;
             animation-name: slidein;
         }
         
         @keyframes slidein {
         from {
-            margin-left: -170px;
+            margin-left: -20000px;
             width: 300%; 
             }
 
@@ -80,7 +99,10 @@
     
 <body>
     <div class="loading">
-<img src="img/puni_logo.png" width="90%" height="90%">
+        <img src="img/puni_logo_no_whiff.png" width="90%" height="90%"/>
+    </div>
+    <div class="whiff">
+        <img src="img/whiff.png" width="35%" height="35%"/>
     </div>
     <h3>Rate your Ride</h3>
 
