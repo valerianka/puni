@@ -30,14 +30,15 @@ $(document).ready(function(){
       for (var i=0; i < vehicles.length; i++) {
         var latDiff = coords.latitude-vehicles[i].latitude;
         var lngDiff = coords.longitude-vehicles[i].longitude;
-        if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
+        if ((latDiff <= 0.005 && latDiff >= -0.005) && (lngDiff <= 0.005 && lngDiff >= -0.005)) {
           closest.push(vehicles[i]);
           console.log(closest.length);
         }
       }
-      var routeNumber = closest[0].route_id
+      var car = closest[0];
+      var routeNumber = closest[0].route_id;
       $('#route-name').text(routeNumber);
-      getAverages(routeNumber);
+      getAverages(car);
     });
   }
 
@@ -48,7 +49,7 @@ $(document).ready(function(){
       $('#filth-score').text('3.7');
     } else {
     $.ajax({
-      url: '/munis/' + name + '/average'
+      url: '/munis/' + name.route_id + '/average'
     }).done(function(content){
       console.log('hello');
       console.log(content);
