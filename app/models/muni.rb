@@ -2,31 +2,6 @@ class Muni < ActiveRecord::Base
 
     has_many :reports
 
-    # def change_ratings(muni)
-    #     num = 0
-    #     sum = 0
-    #     muni.reports.each do |report|
-    #         sum += report.smell_rating
-    #         num += 1
-    #     end
-    #     smell_rating = sum / num
-    #     sum = 0
-    #     num = 0
-    #     muni.reports.each do |report|
-    #         sum += report.clean_rating
-    #         num += 1
-    #     end
-    #     clean_rating = sum / num
-    #     sum = 0
-    #     num = 0
-    #     muni.reports.each do |report|
-    #         sum += report.driver_rating
-    #         num += 1
-    #     end
-    #     driver_rating = sum / num
-    #     muni.uppdate_attributes(smell_rating: smell_rating, clean_rating: clean_rating, driver_rating: driver_rating)
-    # end
-
     def smell_score
       ratings = []
       self.reports.each do |report|
@@ -61,5 +36,29 @@ class Muni < ActiveRecord::Base
       else
         return 2.9
       end
+
+    def update_avg_ratings
+        num = 0
+        sum = 0
+        reports.each do |report|
+            sum += report.smell_rating
+            num += 1
+        end
+        avg_smell_rating = sum / num
+        sum = 0
+        num = 0
+        reports.each do |report|
+            sum += report.clean_rating
+            num += 1
+        end
+        avg_clean_rating = sum / num
+        sum = 0
+        num = 0
+        reports.each do |report|
+            sum += report.driver_rating
+            num += 1
+        end
+        avg_driver_rating = sum / num
+        update_attributes(avg_smelling_rating: avg_smell_rating, avg_clean_rating: avg_clean_rating, avg_driver_rating: avg_driver_rating)
     end
 end
