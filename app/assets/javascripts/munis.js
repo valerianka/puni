@@ -42,6 +42,11 @@ $(document).ready(function(){
   }
 
   var getAverages = function(name){
+    if (typeof name === "undefined") {
+      $('#route-name').text('42');
+      $('#stink-score').text('2.9');
+      $('#filth-score').text('3.7');
+    } else {
     $.ajax({
       url: '/munis/' + name + '/average'
     }).done(function(content){
@@ -50,6 +55,7 @@ $(document).ready(function(){
       $('#stink-score').text(content.smell);
       $('#filth-score').text(content.clean);
     })
+    }
   }
 
   navigator.geolocation.getCurrentPosition(success, error, options);
