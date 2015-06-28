@@ -22,7 +22,7 @@
     <script src="js/jquery-ui.js"></script>
     <style>
         .bus {
-            background-color: gray;
+            background-color: #ededed;
             border-radius: 8px;
             margin-left: 20px;
             margin-right: 20px;
@@ -46,6 +46,22 @@
             height: 220px;
             margin-top: 20px;
         }
+        .grill {
+            background-color: #ccc;
+            border-radius: 10px;
+            padding: 5px;
+            align-content: center;
+            margin-top: 5px;
+        }
+        .wtitle {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            align-content: center;
+            height: 80px;
+            margin-top: 5px;
+        }
+        .slider{ padding-left: 10px; padding-right: 10px; width: 90%;}
     </style>
 
 </head>
@@ -53,33 +69,36 @@
 <body>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" align="center">
+    <div class="container" align="center">
         <div class="bus">
-            <img src="img/puni_logo.png" width="125">
+            <div class="wtitle">
+                <img src="img/puni_logo.png" width="135">
+            </div>
             <div class="row">
                 <div class="col-xs-6" align="center">
                     <div class="window">
-                        <h1>38</h1>
                         <h2>Route</h2>
+                        <h1>38</h1>
                     </div>
 
                 </div>
                 <div class="col-xs-6" align="center">
-                    <div class="window">
-                        <img src="img/Driver_05.png" width="100">
+                    <div class="window">                    
                         <h2>Driver Mood</h2>
+                        <img src="img/Driver_05.png" width="100">
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6" align="center">
+                <div class="col-xs-5" align="center">
                     <div class="avg">
                         <img src="img/Stink_05.png" width="50">
                     </div>
                     <br>
                     <h2>Stink Meter</h2>
                 </div>
-                <div class="col-xs-6" align="center">
+                <div class="col-xs-2 grill"><hr><hr><hr><hr><hr><hr></div>
+                <div class="col-xs-5" align="center">
                     <div class="avg">
                         <img src="img/Filth_05.png" width="50">
                     </div>
@@ -108,9 +127,10 @@
                   <div class="col-xs-3">
                     <img src="img/Stink_05.png" width="65%" height="65%">
                   </div>
+                  
                   <div class="row">
                     <div class="col-xs-12">
-                    <div id="smellSlider"></div>
+                    <input type="range" step="1" name="points" min="1" max="5" class="slider">
                   </div>
                 </div>
                 </div>
@@ -127,7 +147,7 @@
                   </div>
                   <div class="row">
                     <div class="col-xs-12">
-                    <div id="cleanSlider"></div>
+                    <input type="range" step="1" name="points" min="1" max="5" class="slider">
                   </div>
                 </div>
                 </div>
@@ -143,9 +163,8 @@
                     <img src="img/Driver_05.png" width="65%" height="65%">
                   </div>
                   <div class="row">
-                    <div class="col-xs-12">
-                    <div id="moodSlider"></div>
-                  </div>
+                    <input type="range" step="1" name="points" min="1" max="5" class="slider">
+                 
                 </div>
                 </div>
         </br>
@@ -166,11 +185,7 @@
     </div>
     <!-- /container -->
 
-    <script>
-        $( "#smellSlider" ).slider();
-        $( "#cleanSlider" ).slider();
-        $( "#moodSlider" ).slider();
-    </script>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
