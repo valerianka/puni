@@ -31,14 +31,25 @@ $(document).ready(function(){
         var latDiff = coords.latitude-vehicles[i].latitude;
         var lngDiff = coords.longitude-vehicles[i].longitude;
         if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
-          console.log(vehicles[i])
           closest.push(vehicles[i]);
-          console.log(closest);
-          console.log(closest[0].route_id);
+          console.log(closest.length);
         }
       }
-      $('#route-name').text(closest[0].route_id);
+      var routeNumber = closest[0].route_id
+      $('#route-name').text(routeNumber);
+      getAverages(routeNumber);
     });
+  }
+
+  var getAverages = function(name){
+    $.ajax({
+      url: '/munis/' + name + '/average'
+    }).done(function(content){
+      console.log('hello');
+      console.log(content);
+      $('#stink-score').text(content.smell);
+      $('#filth-score').text(content.clean);
+    })
   }
 
   navigator.geolocation.getCurrentPosition(success, error, options);

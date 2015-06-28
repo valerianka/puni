@@ -15,5 +15,13 @@ class MunisController < ApplicationController
 
     end
 
+    def average
+        @muni = Muni.where(route_name: params[:route_name]).first
+        response = {smell: @muni.smell_score, clean: @muni.clean_score, driver: @muni.driver_score}
+        render json: response.to_json
+
+
+    end
+
 
 end
