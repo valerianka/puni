@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <!-- Bootstrap core CSS -->
+    <style>
+        #slider {
+            margin: 10px;
+        }
+    </style>
+    <style>
+        .bus {
+            background-color: gray;
+            border-radius: 8px;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 10px;
+        }
+
+        .avg {
+            background-color: #fff;
+            border-radius: 300px;
+            width: 130px;
+            padding: 40px;
+            align-content: center;
+            margin-top: 60px;
+        }
+
+        .window {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            align-content: center;
+            height: 220px;
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron" align="center">
+        <div class="bus">
+        <%=image_tag("puni_logo.png", width: "125")%>
+            <div class="row">
+                <div class="col-xs-6" align="center">
+                    <div class="window">
+                        <h1 id="route-name">38</h1>
+                        <h2>Route</h2>
+                    </div>
+
+                </div>
+                <div class="col-xs-6" align="center">
+                    <div class="window">
+                        <%=image_tag("Driver_05.png", width: "100")%>
+                        <h2>Driver Mood</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6" align="center">
+                    <div class="avg">
+                        <%=image_tag("Stink_05.png", width: "50")%>
+                    </div>
+                    <br>
+                    <h2>Stink Meter</h2>
+                </div>
+                <div class="col-xs-6" align="center">
+                    <div class="avg">
+                        <%=image_tag("Filth_05.png", width: "50")%>
+                    </div>
+                    <br>
+                    <h2>Filth Meter</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="container" align="center">
+        <h1>MUNI Stinks....Rate Your Ride!</h1>
+        <br>
+        <!-- Example row of columns -->
+        <div class="row">
+            <form>
+                <div class="row">
+                  <div class="col-xs-3">
+                    <%=image_tag("Stink_01.png")%>
+                    <!-- <img src="img/Stink_01.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Smell</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <%=image_tag("Stink_05.png")%>
+                    <!-- <img src="img/Stink_05.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                    <div id="smellSlider"></div>
+                  </div>
+                </div>
+                </div>
+                </br>
+              <div class="row">
+                  <div class="col-xs-3">
+                    <%=image_tag("Filth_01.png")%>
+                    <!-- <img src="img/Filth_01.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Filth</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <%=image_tag("Filth_05.png")%>
+                    <!-- <img src="img/Filth_05.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                    <div id="cleanSlider"></div>
+                  </div>
+                </div>
+                </div>
+                </br>
+              <div class="row">
+                  <div class="col-xs-3">
+                    <%=image_tag("Driver_01.png")%>
+                    <!-- <img src="img/Driver_01.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="col-xs-6">
+                    <h3>Driver's Mood</h3>
+                  </div>
+                  <div class="col-xs-3">
+                    <%=image_tag("Driver_05.png")%>
+                    <!-- <img src="img/Driver_05.png" width="65%" height="65%"> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                    <div id="moodSlider"></div>
+                  </div>
+                </div>
+                </div>
+        </br>
+        <div class="form-group">
+            <h3><label for="comment">Horror story</label></h3>
+            <textarea class="form-control" rows="5" id="comment" placeholder="Add details about any horror stories you experienced on this bus ride."></textarea>
+        </div>
+
+            </form>
+        </div>
+
+<button type="button" class="btn btn-primary btn-lg btn-block">Submit your rating</button>
+        <hr>
+
+        <footer>
+            <p></p>
+        </footer>
+    </div>
+    <!-- /container -->
+
+    <script>
+        $( "#smellSlider" ).slider();
+        $( "#cleanSlider" ).slider();
+        $( "#moodSlider" ).slider();
+    </script>
+
+
+</body>
+
+</html>
