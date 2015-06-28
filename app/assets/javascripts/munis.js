@@ -31,7 +31,9 @@ $(document).ready(function(){
         var latDiff = coords.latitude-vehicles[i].latitude;
         var lngDiff = coords.longitude-vehicles[i].longitude;
         if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
+          console.log(vehicles[i])
           closest.push(vehicles[i]);
+          console.log(closest);
           console.log(closest[0].route_id);
         }
       }
