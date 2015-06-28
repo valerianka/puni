@@ -28,16 +28,46 @@
             margin-top: 170px;
             margin-left: 70px;
             margin-bottom: 30px;
+            animation-duration: 3s;
+            animation-name: fadeIn;
+        }
+        
+        @keyframes fadeIn {
+        from {
+            opacity: 0;
+            }
+
+        to {
+            opacity: 1;
+            }
         }
         
         h3 {
             text-align: left;
-            font-style: bold;
+            font-style: italic;
             font-family: "Trebuchet MS", Helvetica, sans-serif;
             color: grey;
-            margin-left: 70px;
+            margin-left: -170px;
             font-size: 22px;
+            animation-duration: 1s;
+            animation-name: slidein;
         }
+        
+        @keyframes slidein {
+        from {
+            margin-left: -170px;
+            width: 300%; 
+            }
+
+        to {
+            margin-left: 70px;
+            width: 100%;
+            }
+        }
+        
+        h3 {
+            margin-left: 70px;
+            ]
         
         body {
             background-color: #fff;
@@ -46,7 +76,8 @@
     </style>
 
 </head>
-
+    
+    
 <body>
     <div class="loading">
 <img src="img/puni_logo.png" width="90%" height="90%">
