@@ -1,0 +1,210 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>PUNI - Rate your muni ride</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <style>
+        #slider {
+            margin: 10px;
+        }
+    </style>
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <style>
+        body{background-color: dimgrey}
+        .bus {
+            background-color: #ededed;
+            border-radius: 8px;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 10px;
+        }
+        .bcontent {
+            background-color: #ccc;
+            border-radius: 8px;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 10px;
+        }
+        .ledtext{color: orangered;}
+        .avg {
+            background-color: #fff;
+            border-radius: 300px;
+            width: 130px;
+            padding: 40px;
+            align-content: center;
+            margin-top: 40px;
+        }
+        
+        .srow {
+            background-color: #ededed;
+            border-radius: 10px;
+            padding: 10px;
+            align-content: center;
+            vertical-align: middle;
+            height: 100px;
+            margin-top: 20px;
+        }
+        .window {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            align-content: center;
+            vertical-align: middle;
+            height: 220px;
+            margin-top: 20px;
+        }
+        .grill {
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 5px;
+            align-content: center;
+            margin-top: 70px;
+        }
+        .wtitle {
+            background-color: #444;
+            border-radius: 10px;
+            padding: 10px;
+            align-content: center;
+            vertical-align: middle;
+            /*height: 80px;*/
+            margin-top: 5px;
+        }
+        .slider{ padding-left: 10px; padding-right: 10px; width: 90%;}
+        .xltext{font-size: 70px;}
+        input[type="radio"] {
+            width:19px;
+            height:19px;
+            margin:5px 4px 5px 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="container" align="center">
+        <div class="bus">
+            <div class="wtitle">
+                <h1 class="ledtext">Does your MUNI ride stink? Rate it!</h1>
+            </div>
+            <div class="row">
+                <div class="col-xs-6" align="center">
+                    <div class="window">
+                        <h2>Route Near You</h2>
+                        <span class="xltext">38</span>
+                    </div>
+
+                </div>
+                <div class="col-xs-6" align="center">
+                    <div class="window">                    
+                        <h2>Driver Mood</h2>
+                        <%= image_tag("Driver_05.png", size: '100') %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-xs-5" align="center">
+                    <div class="avg">
+                        <%= image_tag("Stink_05.png", size: '50') %>                    </div>
+                    <br>
+                    <h2>Stink Meter</h2>
+                </div>
+                
+                <div class="col-xs-2 grill">
+                    <%=image_tag("puni_logo.png", width: "135")%>
+                </div>
+                
+                <div class="col-xs-5" align="center">
+                    <div class="avg">
+                        <%= image_tag("Filth_05.png", size: "50") %>
+                    </div>
+                    <br>
+                    <h2>Filth Meter</h2>
+                </div>
+            </div>
+       </div>
+        
+        <!-- Example row of columns -->
+        <div class="bcontent">
+            <h2>Rate your ride</h2>
+            <form>
+                <div class="srow">
+                  <div class="col-xs-3">
+                    <h4>Smell Offensiveness</h4>
+                  </div>
+                  <div class="col-xs-3">
+                  <%=image_tag("Stink_01.png", size: "55")%>
+                    <input type="radio" name="stink" value="1">
+                  </div>
+                  <div class="col-xs-3">
+                    <%=image_tag("Stink_04.png", size: "65")%>
+                    <input type="radio" name="stink" value="2">
+                  </div>
+                  <div class="col-xs-3">
+                    <%=image_tag("Stink_05.png", size: "65")%>
+                    <input type="radio" name="stink" value="3">
+                  </div>
+                </div>
+             <div class="srow">
+                  <div class="col-xs-3">
+                    <h4>Filth Level</h4>
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Filth_02.png" width="55" height="55">
+                    <input type="radio" name="filth" value="1">
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Filth_04.png" width="65" height="65">
+                    <input type="radio" name="filth" value="2">
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Filth_05.png" width="55" height="55">
+                    <input type="radio" name="filth" value="3">
+                  </div>
+              </div>
+              <div class="srow">  
+                  <div class="col-xs-3">
+                    <h4>Driver Mood</h4>
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Driver_01.png" width="65" height="65">
+                    <input type="radio" name="filth" value="1">
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Driver_03.png" width="65" height="65">
+                    <input type="radio" name="filth" value="2">
+                  </div>
+                  <div class="col-xs-3">
+                    <img src="img/Driver_05.png" width="65" height="65">
+                    <input type="radio" name="filth" value="3">
+                  </div>
+              </div>
+                
+        <br>
+        <a href="leaderboard.html" class="btn btn-primary btn-lg btn-block">Tell MUNI</a>
+        </form>   
+               
+    </div>        
+    </div>
+    <!-- /container -->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+
+</body></html>

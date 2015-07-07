@@ -38,6 +38,7 @@ $(document).ready(function(){
         }
       }
       $('#route-name').text(closest[0].route_id);
+      $('#route_name_tag').val(closest[0].route_id);
     });
   }
 
