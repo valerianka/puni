@@ -35,10 +35,8 @@ $(document).ready(function(){
           console.log(closest.length);
         }
       }
-      var car = closest[0];
-      var routeNumber = closest[0].route_id;
-      $('#route-name').text(routeNumber);
-      getAverages(car);
+      $('#route-name').text(closest[0].route_id);
+      $('#route_name_tag').val(closest[0].route_id);
     });
   }
 

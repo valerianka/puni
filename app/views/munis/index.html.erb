@@ -82,11 +82,11 @@ a<!DOCTYPE html>
         <h1>MUNI Stinks....Rate Your Ride!</h1>
         <br>
         <!-- Example row of columns -->
-        <%= form_tag({controller: "munis", action: "show"}, id: "report-form") do %>
-            <div class="row">
-            <div class="row">
-                <%= hidden_field_tag(:route_name, '10') %>
+        <%= form_tag(controller: "munis", action: "show") do %>
+        <%= hidden_field_tag(:route_name, 1, :id => "route_name_tag") %>
 
+            <div class="row">
+            <div class="row">
                 <div class="col-xs-3">
                     <%= image_tag("Stink_01.png", width: "65%", height: "65%") %>
                 </div>
