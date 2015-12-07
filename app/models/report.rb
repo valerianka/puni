@@ -1,6 +1,7 @@
 class Report < ActiveRecord::Base
     belongs_to :muni
-    validates :smell_rating, presence: true
-    validates :clean_rating, presence: true
-    validates :driver_rating, presence: true
+    has_one :story
+    validates_each :smell_rating, :clean_rating, :driver_rating do |record, attr, value|
+      record.errors.add(attr, 'must be integer from 1 to 5') if !(1..5).include?(value)
+    end
 end
