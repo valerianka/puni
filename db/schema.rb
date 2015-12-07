@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150628201057) do
+ActiveRecord::Schema.define(version: 20151203052451) do
 
   create_table "munis", force: :cascade do |t|
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "route_name"
-    t.integer  "avg_smelling_rating", default: 0
-    t.integer  "avg_clean_rating",    default: 0
-    t.integer  "avg_driver_rating",   default: 0
+    t.integer  "avg_smell_rating",  default: 1
+    t.integer  "avg_clean_rating",  default: 1
+    t.integer  "avg_driver_rating", default: 1
   end
 
   create_table "reports", force: :cascade do |t|
