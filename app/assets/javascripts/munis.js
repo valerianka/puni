@@ -22,21 +22,22 @@ $(document).ready(function(){
 
   var compareBusData = function(coords){
     $.ajax({
-      url: "http://proximobus.appspot.com/agencies/sf-muni/vehicles.json",
+      url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
       var closest = [];
       var vehicles = data.items;
       console.log(data.items.length);
-      for (var i=0; i < vehicles.length; i++) {
-        var latDiff = coords.latitude-vehicles[i].latitude;
-        var lngDiff = coords.longitude-vehicles[i].longitude;
-        if ((latDiff <= 0.005 && latDiff >= -0.005) && (lngDiff <= 0.005 && lngDiff >= -0.005)) {
+      for (var i = 0; i < vehicles.length; i++) {
+        var latDiff = coords.latitude - vehicles[i].latitude;
+        var lngDiff = coords.longitude - vehicles[i].longitude;
+        if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
+          console.log(vehicles[i])
           closest.push(vehicles[i]);
           console.log(closest.length);
         }
       }
-      $('#route-name').text(closest[0].route_id);
-      $('#route_name_tag').val(closest[0].route_id);
+      $('#route_name_tag').text(closest[0].route_id);
+      $('#route_name').val(closest[0].route_id);
     });
   }
 
