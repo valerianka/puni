@@ -12,15 +12,10 @@ class Muni < ActiveRecord::Base
       end
     end
 
-    def define_update_avg(obj, name, val)
-      define_method(name) {
-        obj.send(name, val)
-      } 
-    end
   end
   
-  def update_averages                       
-    %w(smell clean driver).each{ |attr| Muni.define_update_avg(self, "update_avg_#{attr}_rating", average_of("#{attr}_rating".to_sym)) }
+  def update_averages
+    %w(smell clean driver).each{ |attr| self.send("avg_#{attr}_rating=", average_of("#{attr}_rating"))}
   end
 
   def average_of(attr)
