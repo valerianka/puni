@@ -9,11 +9,6 @@ $(document).ready(function(){
   function success(pos) {
     var crd = pos.coords;
     compareBusData(crd);
-
-
-    console.log('Your current position is:');
-    console.log('Latitude : ' + crd.latitude);
-    console.log('Longitude: ' + crd.longitude);
   };
 
   function error(err) {
@@ -21,43 +16,41 @@ $(document).ready(function(){
   };
 
   var compareBusData = function(coords){
+
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
       var closest = [];
       var vehicles = data.items;
-      console.log(data.items.length);
       for (var i = 0; i < vehicles.length; i++) {
         var latDiff = coords.latitude - vehicles[i].latitude;
         var lngDiff = coords.longitude - vehicles[i].longitude;
-        if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
-          console.log(vehicles[i])
+        //temporary change of latdiff
+        // if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
+        if ((latDiff <= 0.005 && latDiff >= -0.005) && (lngDiff <= 0.005 && lngDiff >= -0.005)) {
+
           closest.push(vehicles[i]);
-          console.log(closest.length);
         }
       }
       $('#route_name_tag').text(closest[0].route_id);
       $('#route_name').val(closest[0].route_id);
+      getAverages(closest[0]);
+      
     });
+
   }
 
   var getAverages = function(name){
-    if (typeof name === "undefined") {
-      $('#route-name').text('42');
-      $('#stink-score').text('2.9');
-      $('#filth-score').text('3.7');
-    } else {
-    $.ajax({
-      url: '/munis/' + name.route_id + '/average'
-    }).done(function(content){
-      console.log('hello');
-      console.log(content);
-      $('#stink-score').text(content.smell);
-      $('#filth-score').text(content.clean);
-    })
+    if (!(typeof name === "undefined")) {
+      $.ajax({
+        url: '/munis/' + name.route_id + '/average'
+      }).done(function(content){
+        $('#driver-score').prepend('<img id="Driver_img" src="http://localhost:3000/assets/Driver_0' + content.avg_driver_rating + '.png" />');
+        $('#smell-score').prepend('<img id="Smell_img" src="http://localhost:3000/assets/Smell_0' + content.avg_smell_rating + '.png" />');
+        $('#clean-score').prepend('<img id="Clean_img" src="http://localhost:3000/assets/Clean_0' + content.avg_clean_rating + '.png" />');
+      });
     }
   }
-
   navigator.geolocation.getCurrentPosition(success, error, options);
 
 });

@@ -1,135 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="jumbotron" align="center">
+  <div class="bus">
+    <%= render 'shared/flash_messages' if !flash.empty? %>
+    <%=image_tag("puni_logo.png", width: "125")%>
+    <%= render 'shared/bus' %>   
+  </div>
+</div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <%= javascript_include_tag "application" %>
-    <%= stylesheet_link_tag "application" %>
-    <title>PUNI - Rate your muni ride</title>
 
-</head>
+<div class="container" align="center">
+  <h1>MUNI Stinks....Rate Your Ride!</h1>
+  <br>
 
-<body>
+  <%= form_tag(controller: "munis", action: "show") do %>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" align="center">
-        <div class="bus">
-        <%= render 'shared/flash_messages' if !flash.empty? %>
-        <%=image_tag("puni_logo.png", width: "125")%>
-            <div class="row">
-                <div class="col-xs-6" align="center">
-                    <div class="window">
-                        <h1 id="route_name_tag"></h1>
-                        <h2>Route</h2>
-                    </div>
+    <%= hidden_field_tag(:route_name, 1, :id => "route_name") %>
+    <%= render 'shared/slider', :item => "smell" %>
+    <br>
+    <%= render 'shared/slider', :item => "clean" %>
+    <br>
+    <%= render 'shared/slider', :item => "driver" %>
+    <br>
 
-                </div>
-                <div class="col-xs-6" align="center">
-                    <div class="window">
-                        <%= image_tag("Driver_05.png", size: '100') %>
-                        <h2>Driver Mood</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6" align="center">
-                    <div class="avg">
-                    <%= image_tag("Stink_05.png", size: '50') %>
-                    </div>
-                    <br>
-                    <h2>Stink Meter</h2>
-                </div>
-                <div class="col-xs-6" align="center">
-                    <div class="avg">
-                    <%= image_tag("Filth_05.png", size: "50") %>
-                    </div>
-                    <br>
-                    <h2>Filth Meter</h2>
-                </div>
-            </div>
-        </div>
-
+    <div class="form-group">
+      <h3><label for="comment">Horror story</label></h3>
+      <textarea class="form-control" rows="5" id="comment" placeholder="Add details about any horror stories you experienced on this bus ride."></textarea>
     </div>
+    <%= submit_tag "Submit your rating", class: "btn btn-primary btn-lg btn-block" %>
 
-
-    <div class="container" align="center">
-        <h1>MUNI Stinks....Rate Your Ride!</h1>
-        <br>
-        <!-- Example row of columns -->
-        <%= form_tag(controller: "munis", action: "show") do %>
-            <%= hidden_field_tag(:route_name, 1, :id => "route_name") %>
-
-            <div class="row">
-                <div class="col-xs-3">
-                    <%= image_tag("Stink_01.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="col-xs-6">
-                    <h3>Smell</h3>
-                </div>
-                <div class="col-xs-3">
-                    <%= image_tag("Stink_05.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                    <!-- <div id="smellSlider"></div> -->
-                    <input id="range" type=range name=smell_rating min=1 value=1 max=5 step=1>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-3">
-                    <%= image_tag("Filth_01.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="col-xs-6">
-                    <h3>Filth</h3>
-                </div>
-                <div class="col-xs-3">
-                    <%= image_tag("Filth_05.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                    <input id="range" type=range name=clean_rating min=1 value=1 max=5 step=1>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-3">
-                    <%= image_tag("Driver_01.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="col-xs-6">
-                    <h3>Driver's Mood</h3> 
-                </div>
-                <div class="col-xs-3">
-                    <%= image_tag("Driver_05.png", width: "65%", height: "65%") %>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <input id="range" type=range name=driver_rating min=1 value=1 max=5 step=1>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <h3><label for="comment">Horror story</label></h3>
-                <textarea class="form-control" rows="5" id="comment" placeholder="Add details about any horror stories you experienced on this bus ride."></textarea>
-            </div>
-            <%= submit_tag "Submit your rating", class: "btn btn-primary btn-lg btn-block" %>
-        <% end %>
-
-    </div>
-
-        <hr>
-
-        <footer>
-            <p></p>
-        </footer>
-    </div>
-</body>
-
-</html>
+  <% end %>
+  <hr>
+ <%= render 'shared/footer' %>
+</div>

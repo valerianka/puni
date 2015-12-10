@@ -1,0 +1,12 @@
+<div class="row" align="center">
+  <div class="col-xs-1"><h1><%= "#{winner.route_name}"%></h1></div>
+  <div class="col-xs-3">
+    <h3><%= image_tag("Smell_0#{winner.avg_smell_rating}.png", width: '50') %><%= " Smell Avg #{winner.avg_smell_rating}" %></h3>
+  </div>
+  <div class="col-xs-3">
+    <h3><%= image_tag("Clean_0#{winner.avg_clean_rating}.png", width: '50') %><%= " Clean Avg #{winner.avg_clean_rating}" %></h3>
+  </div>
+  <div class="col-xs-3">
+    <h3><%= image_tag("Driver_0#{winner.avg_driver_rating}.png", width: '50') %><%= " Driver Avg #{winner.avg_driver_rating}" %></h3>
+  </div>
+</div>

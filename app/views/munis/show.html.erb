@@ -1,92 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no">    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>PUNI - Rate your muni ride</title>
-    <%= javascript_include_tag "application" %>
-    <%= stylesheet_link_tag "application" %>
-</head>
-
-<body>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" align="center">
-        <div class="leader">
-            <div class="row">
-                <%= image_tag("puni-award.png") %>
-                <h3>PUNI Awards</h3>
-            </div>
-        </div>
-
+<div class="jumbotron" align="center">
+  <div class="leader">
+    <div class="row">
+      <%= image_tag("puni-award.png") %>
+      <h3>PUNI Awards</h3>
     </div>
+  </div>
+</div>
 
-    <div class="container" align="center">
-        <%= image_tag("puni_logo.png", width: '100') %>
+<div class="container" align="center">
+  <%= image_tag("puni_logo.png", width: '100') %>
 
-        <h2>Stink Champs</h2>
+  <h2>Stink Champs</h2>
+  <div class="row">
+    <%= render 'shared/stink_winner', :winner => @munis.first if !@munis.nil? %>
+    <%= render 'shared/stink_winner', :winner => @munis.second if !@munis.second.nil? %>
+    <%= render 'shared/stink_winner', :winner => @munis.third if !@munis.third.nil? %>
+  </div>
 
-        <!-- Example row of columns -->
-        <div class="row">
-            <div class="row" align="center">
-                <div class="col-xs-1"><h1><%= "#{@munis.first.route_name}"%></h1></div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Stink_04.png", width: '50') %><%= " Stink Avg #{@munis.first.avg_smell_rating}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Filth_05.png", width: '50') %><%= " Filth Avg #{@munis.first.avg_clean_rating}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Driver_04.png", width: '50') %><%= " Driver Avg #{@munis.first.avg_driver_rating}" %></h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-1"><h1><%= "#{if @munis.second 
-                    @munis.second.route_name else @munis.first.route_name end}"%></h1></div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Stink_04.png", width: '50') %>
-                    <%=  " Stink Avg #{if @munis.second
-                        @munis.second.avg_smell_rating
-                        else @munis.first.avg_smell_rating end}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Filth_05.png", width: '50') %><%=  " Filth Avg #{if @munis.second
-                        @munis.second.avg_clean_rating
-                        else @munis.first.avg_clean_rating end}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Driver_04.png", width: '50') %><%=  " Driver Avg #{if @munis.second
-                        @munis.second.avg_driver_rating
-                        else @munis.first.avg_driver_rating end}" %></h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-1"><h1><%= "#{third_winner = @munis.third || @munis.second || @munis.first
-                third_winner.route_name }"%></h1></div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Stink_04.png", width: '50') %><%=  " Stink Avg #{third_winner.avg_smell_rating}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Filth_05.png", width: '50') %><%=  " Filth Avg #{third_winner.avg_clean_rating}" %></h3>
-                </div>
-                <div class="col-xs-3">
-                    <h3><%= image_tag("Driver_04.png", width: '50') %><%=  " Driver Avg #{third_winner.avg_driver_rating}" %></h3>
-                </div>
-            </div>
-        </div>
+  <hr> 
 
-        <hr> 
+  <%= render 'shared/footer' %>
 
-        <footer>
-            <p>&copy; Company 2014</p>
-        </footer>
-    </div>
-    <!-- /container -->
-
-</body>
-
-</html>
+</div>
