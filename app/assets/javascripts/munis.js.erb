@@ -34,6 +34,7 @@ $(document).ready(function(){
       }
       $('#route_name_tag').text(closest[0].route_id);
       $('#route_name').val(closest[0].route_id);
+      console.log("in compareBusData ajax request");
       getAverages(closest[0]);
       
     });
@@ -45,9 +46,14 @@ $(document).ready(function(){
       $.ajax({
         url: '/munis/' + name.route_id + '/average'
       }).done(function(content){
-        $('#driver-score').prepend('<img id="Driver_img" src="http://localhost:3000/assets/Driver_0' + content.avg_driver_rating + '.png" />');
-        $('#smell-score').prepend('<img id="Smell_img" src="http://localhost:3000/assets/Smell_0' + content.avg_smell_rating + '.png" />');
-        $('#clean-score').prepend('<img id="Clean_img" src="http://localhost:3000/assets/Clean_0' + content.avg_clean_rating + '.png" />');
+        if (!(content === null)) {
+          <% image_names = [] %>  
+          <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
+          var imagePaths = <%= image_names.map{|img| asset_path "#{img}"} %>;
+          $('#driver-score').prepend('<img id="Driver_img" src=' + imagePaths[content.avg_driver_rating - 1] + ' />');
+          $('#smell-score').prepend('<img id="Smell_img" src=' + imagePaths[content.avg_smell_rating + 5 - 1] + ' />');
+          $('#clean-score').prepend('<img id="Clean_img" src=' + imagePaths[content.avg_clean_rating + 10 - 1] + ' />');
+        }
       });
     }
   }
