@@ -16,30 +16,25 @@ $(document).ready(function(){
   };
 
   var compareBusData = function(coords){
-
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
-      var closest = [];
       var vehicles = data.items;
-      for (var i = 0; i < vehicles.length; i++) {
-        var latDiff = coords.latitude - vehicles[i].latitude;
-        var lngDiff = coords.longitude - vehicles[i].longitude;
-        //temporary change of latdiff
-        // if ((latDiff <= 0.003 && latDiff >= -0.003) && (lngDiff <= 0.003 && lngDiff >= -0.003)) {
-        if ((latDiff <= 0.005 && latDiff >= -0.005) && (lngDiff <= 0.005 && lngDiff >= -0.005)) {
-
-          closest.push(vehicles[i]);
-        }
-      }
-      $('#route_name_tag').text(closest[0].route_id);
-      $('#route_name').val(closest[0].route_id);
-      console.log("in compareBusData ajax request");
-      getAverages(closest[0]);
-      
+      vehicles.sort(function(a, b){
+        return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
+      });
+      if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
+        $('#route_name_tag').text(vehicles[0].route_id);
+        $('#route_name').val(vehicles[0].route_id);
+        getAverages(vehicles[0]);
+      };
     });
 
   }
+
+  var distanceBetweenPoints = function(a, b) {
+    return Math.sqrt(Math.pow((a.latitude - b.latitude), 2) + Math.pow((a.longitude - b.longitude), 2));
+  };
 
   var getAverages = function(name){
     if (!(typeof name === "undefined")) {
@@ -53,10 +48,10 @@ $(document).ready(function(){
           $('#driver-score').prepend('<img id="Driver_img" src=' + imagePaths[content.avg_driver_rating - 1] + ' />');
           $('#smell-score').prepend('<img id="Smell_img" src=' + imagePaths[content.avg_smell_rating + 5 - 1] + ' />');
           $('#clean-score').prepend('<img id="Clean_img" src=' + imagePaths[content.avg_clean_rating + 10 - 1] + ' />');
-        }
+        };
       });
-    }
-  }
+    };
+  };
   navigator.geolocation.getCurrentPosition(success, error, options);
 
 });
