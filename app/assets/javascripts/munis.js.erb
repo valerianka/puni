@@ -1,11 +1,17 @@
 $(document).ready(function(){
 
-  document.getElementById("range_smell").addEventListener("mouseup", function() { 
-    this.value = Math.round(this.value);
-   });
-  document.getElementById("range_smell").addEventListener("touchend", function() { 
-    this.value = Math.round(this.value);
-   });
+  var elements = ["range_smell", "range_driver", "range_clean"];
+
+  for (var i = 0, len = elements.length; i < len; i++) {
+    var getHandler = function(element) {
+      return function (e) {
+        element.value = Math.round(element.value);
+      };
+    }
+    var elem = document.getElementById(elements[i]);
+    elem.addEventListener("mouseup", getHandler(elem), false);
+    elem.addEventListener("touchend", getHandler(elem), false);
+  }
 
   var options = {
     enableHighAccuracy: true,
@@ -26,7 +32,6 @@ $(document).ready(function(){
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
-      console.log("in compareBusData");
       var vehicles = data.items;
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
