@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+  document.getElementById("range_smell").addEventListener("mouseup", function() { 
+    this.value = Math.round(this.value);
+   });
+  document.getElementById("range_smell").addEventListener("touchend", function() { 
+    this.value = Math.round(this.value);
+   });
+
   var options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -19,6 +26,7 @@ $(document).ready(function(){
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
+      console.log("in compareBusData");
       var vehicles = data.items;
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
