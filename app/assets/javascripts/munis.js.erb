@@ -13,6 +13,11 @@ $(document).ready(function(){
     elem.addEventListener("touchend", getHandler(elem), false);
   }
 
+  document.getElementById('route_name_tag').addEventListener('change', function(){
+    var routeId = this.value;
+    getAverages(routeId);
+  });
+
   var options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -21,50 +26,107 @@ $(document).ready(function(){
 
   function success(pos) {
     var crd = pos.coords;
-    compareBusData(crd);
+    processBusLocations(crd);
   };
 
   function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
   };
 
-  var compareBusData = function(coords){
+  var processBusLocations = function(coords){
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
-      var vehicles = data.items;
-      vehicles.sort(function(a, b){
+      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
+      formOptionElements(uniqueVehiclesArray);
+
+      data.items.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
-      if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
-        $('#route_name_tag').text(vehicles[0].route_id);
-        $('#route_name').val(vehicles[0].route_id);
-        getAverages(vehicles[0]);
-      };
+      if (distanceBetweenPoints(data.items[0], coords) < 0.003) {
+        $('#route_name_tag').val(data.items[0].route_id);
+        $('#route_name').val(data.items[0].route_id);
+        getAverages(data.items[0].route_id);
+      } else setDefaultImages();
     });
+  };
 
-  }
+  var sortedVehiclesArray = function(data){
+    var vehicles = [];
+    data.items.forEach(function(item) {
+      var num = 0, i = 0;
+      vehicle = {};
+      vehicle.routeId = item.route_id;
+      while (vehicle.routeId[i] >= '0' && vehicle.routeId[i] <= '9') {
+        num = num * 10 + Number(vehicle.routeId[i]);
+        i++;
+      }
+      vehicle.routeNum = num;
+      vehicles.push(vehicle);
+    });
+    vehicles.sort(function(a, b){
+      if (a.routeNum === b.routeNum) {
+        return a.routeId > b.routeId ? 1 : a.routeId === b.routeId ? 0 : -1;
+      }
+      return a.routeNum > b.routeNum ? 1 : -1; 
+    });
+    return vehicles;
+  };
 
-  var distanceBetweenPoints = function(a, b) {
+  var formUniqueVehiclesArray = function(vehicles){
+    var uniqVehicles = [];
+      uniqVehicles[0] = vehicles[0].routeId;
+      var j = 0;
+      for (var i = 1, len = vehicles.length; i < len; i++) {
+        if (vehicles[i].routeId != uniqVehicles[j]) {
+          uniqVehicles[++j] = vehicles[i].routeId;
+        }
+      }
+      return uniqVehicles;
+  };
+
+  var formOptionElements = function(arr){
+    select = document.getElementById('route_name_tag');
+    for (var i = 0, len = arr.length; i < len; i++){
+      var opt = document.createElement('option');
+      opt.value = arr[i];
+      opt.innerHTML = arr[i];
+      select.appendChild(opt);
+    }
+  };
+
+  var distanceBetweenPoints = function(a, b){
     return Math.sqrt(Math.pow((a.latitude - b.latitude), 2) + Math.pow((a.longitude - b.longitude), 2));
   };
 
-  var getAverages = function(name){
-    if (!(typeof name === "undefined")) {
-      $.ajax({
-        url: '/munis/' + name.route_id + '/average'
-      }).done(function(content){
-        if (!(content === null)) {
-          <% image_names = [] %>  
-          <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
-          var imagePaths = <%= image_names.map{|img| asset_path "#{img}"} %>;
-          $('#driver-score').prepend('<img id="Driver_img" src=' + imagePaths[content.avg_driver_rating - 1] + ' />');
-          $('#smell-score').prepend('<img id="Smell_img" src=' + imagePaths[content.avg_smell_rating + 5 - 1] + ' />');
-          $('#clean-score').prepend('<img id="Clean_img" src=' + imagePaths[content.avg_clean_rating + 10 - 1] + ' />');
-        };
-      });
-    };
+  var setDefaultImages = function(){
+    var questionMarkImagePath = '<%= asset_path "Question_mark.png" %>';
+    setImages(questionMarkImagePath, questionMarkImagePath, questionMarkImagePath);
   };
-  navigator.geolocation.getCurrentPosition(success, error, options);
 
+  var setImages = function(driverImagePath, smellImagePath, cleanImagePath){
+    document.getElementById('driver-score').innerHTML = "";
+    document.getElementById('smell-score').innerHTML = "";
+    document.getElementById('clean-score').innerHTML = "";
+    $('#driver-score').prepend('<img id="Driver_img" src=' + driverImagePath + ' />');
+    $('#smell-score').prepend('<img id="Smell_img" src=' + smellImagePath + ' />');
+    $('#clean-score').prepend('<img id="Clean_img" src=' + cleanImagePath + ' />');
+  };
+
+  var getAverages = function(name){
+    $.ajax({
+      url: '/munis/' + name + '/average'
+    }).done(function(content){
+      if (content != null) {
+        <% image_names = [] %>
+        <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
+        var imagePaths = <%= image_names.map{|img| asset_path "#{img}"} %>;
+        setImages(imagePaths[content.avg_driver_rating - 1],
+                  imagePaths[content.avg_smell_rating + 5 - 1], 
+                  imagePaths[content.avg_clean_rating + 10 - 1]);
+      } else setDefaultImages();
+    });
+  };
+
+  navigator.geolocation.getCurrentPosition(success, error, options);
 });
