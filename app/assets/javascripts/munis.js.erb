@@ -1,4 +1,85 @@
 $(document).ready(function(){
+  hidePopup();
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+  
+  function success(pos) {
+    coordinates = pos.coords;
+    processBusLocations(coordinates);
+    document.getElementById('route_name_tag').addEventListener('click', function(){
+      $("#popup").show();
+      initMap(coordinates, vehicles);
+    });
+  };
+
+  function error(err) {
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  };
+
+  var vehicles = [];
+  var processBusLocations = function(coords){
+    $.ajax({
+      url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
+    }).done(function(data){
+      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
+      vehicles = data.items;
+      vehicles.sort(function(a, b){
+        return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
+      });
+      if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
+        getAverages(vehicles[0].route_id);
+      } else setDefaultImages();
+    });
+  };
+
+  function initMap(coords, vehicles) {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: coords.latitude, lng: coords.longitude},
+      zoom: 15
+    });
+    document.getElementById()
+    for (var i = 0, len = vehicles.length; i < len; i++) {
+      var busesCoordinates = new google.maps.LatLng(vehicles[i].latitude, vehicles[i].longitude);
+      var marker = new google.maps.Marker({
+        position: busesCoordinates,
+        map: map
+      });
+      marker.setMap(map);
+      var content = document.createElement("a");       
+      var text = document.createTextNode(vehicles[i].route_id);       
+      content.appendChild(text);
+      content.addEventListener('click', (function(routeId){
+        return function(){
+          hidePopup();
+          getAverages(routeId);
+        };
+      })(vehicles[i].route_id));                               
+      var infowindow = new google.maps.InfoWindow();
+      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+        return function() {
+          infowindow.setContent(content);
+                 
+          infowindow.open(map,marker);
+        };
+      })(marker,content,infowindow));
+    }
+  }
+
+
+  function hidePopup() {
+    $("#popup").hide();
+  };
+  document.getElementById("popup").addEventListener("click", function(){
+    hidePopup();
+  });
+
+  document.getElementById("popup-1").addEventListener("click", function(event){
+    event.stopPropagation();
+  });
 
   var elements = ["range_smell", "range_driver", "range_clean"];
 
@@ -12,44 +93,6 @@ $(document).ready(function(){
     elem.addEventListener("mouseup", getHandler(elem), false);
     elem.addEventListener("touchend", getHandler(elem), false);
   }
-
-  document.getElementById('route_name_tag').addEventListener('change', function(){
-    var routeId = this.value;
-    getAverages(routeId);
-  });
-
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-
-  function success(pos) {
-    var crd = pos.coords;
-    processBusLocations(crd);
-  };
-
-  function error(err) {
-    console.warn('ERROR(' + err.code + '): ' + err.message);
-  };
-
-  var processBusLocations = function(coords){
-    $.ajax({
-      url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
-    }).done(function(data){
-      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
-      formOptionElements(uniqueVehiclesArray);
-
-      data.items.sort(function(a, b){
-        return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
-      });
-      if (distanceBetweenPoints(data.items[0], coords) < 0.003) {
-        $('#route_name_tag').val(data.items[0].route_id);
-        $('#route_name').val(data.items[0].route_id);
-        getAverages(data.items[0].route_id);
-      } else setDefaultImages();
-    });
-  };
 
   var sortedVehiclesArray = function(data){
     var vehicles = [];
@@ -85,16 +128,6 @@ $(document).ready(function(){
       return uniqVehicles;
   };
 
-  var formOptionElements = function(arr){
-    select = document.getElementById('route_name_tag');
-    for (var i = 0, len = arr.length; i < len; i++){
-      var opt = document.createElement('option');
-      opt.value = arr[i];
-      opt.innerHTML = arr[i];
-      select.appendChild(opt);
-    }
-  };
-
   var distanceBetweenPoints = function(a, b){
     return Math.sqrt(Math.pow((a.latitude - b.latitude), 2) + Math.pow((a.longitude - b.longitude), 2));
   };
@@ -125,8 +158,11 @@ $(document).ready(function(){
                   imagePaths[content.avg_smell_rating + 5 - 1], 
                   imagePaths[content.avg_clean_rating + 10 - 1]);
       } else setDefaultImages();
+      $('#route_name').val(name);
+      document.getElementById('route_name_tag').innerHTML = name;
     });
   };
 
   navigator.geolocation.getCurrentPosition(success, error, options);
 });
+
