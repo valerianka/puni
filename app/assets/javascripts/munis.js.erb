@@ -8,11 +8,12 @@ $(document).ready(function(){
   };
   
   function success(pos) {
-    coordinates = pos.coords;
-    processBusLocations(coordinates);
-    document.getElementById('route_name_tag').addEventListener('click', function(){
-      $("#popup").show();
-      initMap(coordinates, vehicles);
+    var coordinates = pos.coords;
+    processBusLocations(coordinates, function(vehicles){
+      document.getElementById('route_name_tag').addEventListener('click', function(){
+        $("#popup").show();
+        initMap(coordinates, vehicles);
+      })
     });
   };
 
@@ -20,19 +21,19 @@ $(document).ready(function(){
     console.warn('ERROR(' + err.code + '): ' + err.message);
   };
 
-  var vehicles = [];
-  var processBusLocations = function(coords){
+  var processBusLocations = function(coords, completionHandler){
     $.ajax({
       url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
-      vehicles = data.items;
+      var vehicles = data.items;
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
       if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
         getAverages(vehicles[0].route_id);
       } else setDefaultImages();
+      completionHandler(vehicles);
     });
   };
 
