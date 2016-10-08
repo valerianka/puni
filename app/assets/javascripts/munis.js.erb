@@ -27,6 +27,7 @@ $(document).ready(function(){
     }).done(function(data){
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       var vehicles = data.items;
+      console.log(vehicles.length)
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
@@ -42,6 +43,7 @@ $(document).ready(function(){
       center: {lat: coords.latitude, lng: coords.longitude},
       zoom: 15
     });
+    console.log("in init map")
     document.getElementById()
     for (var i = 0, len = vehicles.length; i < len; i++) {
       var busesCoordinates = new google.maps.LatLng(vehicles[i].latitude, vehicles[i].longitude);
