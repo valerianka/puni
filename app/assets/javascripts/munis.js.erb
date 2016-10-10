@@ -24,7 +24,7 @@ $(document).ready(function(){
 
   var processBusLocations = function(coords, completionHandler){
     $.ajax({
-      url: "http://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
+      url: "https://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
     }).done(function(data){
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       var vehicles = data.items;
