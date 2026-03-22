@@ -1,6 +1,6 @@
 class Muni < ActiveRecord::Base
 
-  has_many :reports
+  has_many :reports, dependent: :destroy
   validates :route_name, presence: true,
                          uniqueness: true
   validates_each :avg_smell_rating, :avg_clean_rating, :avg_driver_rating do |record, attr, value|

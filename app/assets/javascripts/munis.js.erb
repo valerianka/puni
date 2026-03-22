@@ -24,7 +24,7 @@ $(document).ready(function(){
 
   var processBusLocations = function(coords, completionHandler){
     $.ajax({
-      url: "https://proximobus-1135.appspot.com/agencies/sf-muni/vehicles.json",
+      url: "/munis/vehicles",
     }).done(function(data){
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       var vehicles = data.items;
@@ -32,9 +32,10 @@ $(document).ready(function(){
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
-      if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
-        getAverages(vehicles[0].route_id);
-      } else setDefaultImages();
+      // TODO: restore distance check for production (< 0.003 degrees ≈ 300m)
+      // if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
+      getAverages(vehicles[0].route_id);
+      // } else setDefaultImages();
       completionHandler(vehicles);
     });
   };

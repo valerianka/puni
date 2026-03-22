@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root 'munis#index'
 
   # Example of regular route:
+  get 'munis/vehicles' => 'munis#vehicles'
   get 'munis/:route_name/average' => 'munis#average'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
