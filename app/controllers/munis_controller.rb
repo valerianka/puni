@@ -23,25 +23,22 @@ class MunisController < ApplicationController
 
   def vehicles
     uri = URI("https://api.511.org/transit/VehiclePositions?api_key=#{ENV['MUNI_511_API_KEY']}&agency=SF&format=json")
-    response = Net::HTTP.get(uri)
+    response = Net::HTTP.get(uri).encode('UTF-8', invalid: :replace, undef: :replace).gsub("\xEF\xBB\xBF", '')
     data = JSON.parse(response)
 
-    Rails.logger.info "511 API response keys: #{data.keys}"
-    Rails.logger.info "First entity: #{data['entity']&.first&.inspect}"
-
-    items = data['entity'].filter_map do |entity|
-      v = entity['vehicle']
-      next unless v && v['trip'] && v['position']
+    items = data['Entities'].filter_map do |entity|
+      v = entity['Vehicle']
+      next unless v && v['Trip'] && v['Position']
       {
-        route_id: v['trip']['route_id'],
-        latitude:  v['position']['latitude'],
-        longitude: v['position']['longitude']
+        route_id:  v['Trip']['RouteId'],
+        latitude:  v['Position']['Latitude'],
+        longitude: v['Position']['Longitude']
       }
     end
 
     render json: { items: items }
   rescue => e
-    Rails.logger.error "511 API error: #{e.message}\nResponse: #{response&.first(500)}"
+    Rails.logger.error "511 API error: #{e.message}"
     render json: { error: e.message }, status: 500
   end
 
