@@ -23,7 +23,7 @@ class MunisController < ApplicationController
 
   def vehicles
     uri = URI("https://api.511.org/transit/VehiclePositions?api_key=#{ENV['MUNI_511_API_KEY']}&agency=SF&format=json")
-    response = Net::HTTP.get(uri).encode('UTF-8', invalid: :replace, undef: :replace).gsub("\xEF\xBB\xBF", '')
+    response = Net::HTTP.get(uri).b.sub(/\A\xEF\xBB\xBF/, '').force_encoding('UTF-8')
     data = JSON.parse(response)
 
     items = data['Entities'].filter_map do |entity|
