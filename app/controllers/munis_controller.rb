@@ -26,8 +26,12 @@ class MunisController < ApplicationController
     response = Net::HTTP.get(uri)
     data = JSON.parse(response)
 
-    items = data['entity'].map do |entity|
+    Rails.logger.info "511 API response keys: #{data.keys}"
+    Rails.logger.info "First entity: #{data['entity']&.first&.inspect}"
+
+    items = data['entity'].filter_map do |entity|
       v = entity['vehicle']
+      next unless v && v['trip'] && v['position']
       {
         route_id: v['trip']['route_id'],
         latitude:  v['position']['latitude'],
@@ -36,6 +40,9 @@ class MunisController < ApplicationController
     end
 
     render json: { items: items }
+  rescue => e
+    Rails.logger.error "511 API error: #{e.message}\nResponse: #{response&.first(500)}"
+    render json: { error: e.message }, status: 500
   end
 
   def average
