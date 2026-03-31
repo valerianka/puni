@@ -3,10 +3,16 @@ $(document).ready(function(){
 
   var options = {
     enableHighAccuracy: true,
-    timeout: 5000,
+    timeout: 30000,
     maximumAge: 0
   };
-  
+
+  var lowAccuracyOptions = {
+    enableHighAccuracy: false,
+    timeout: 15000,
+    maximumAge: 0
+  };
+
   function success(pos) {
     console.log(pos);
     var coordinates = pos.coords;
@@ -20,6 +26,11 @@ $(document).ready(function(){
 
   function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
+    if (err.code === 3) { // TIMEOUT — retry with lower accuracy (faster on iOS Safari)
+      navigator.geolocation.getCurrentPosition(success, function(err2) {
+        console.warn('Low accuracy fallback failed (' + err2.code + '): ' + err2.message);
+      }, lowAccuracyOptions);
+    }
   };
 
   var processBusLocations = function(coords, completionHandler){
@@ -165,9 +176,14 @@ $(document).ready(function(){
       } else setDefaultImages();
       $('#route_name').val(name);
       document.getElementById('route_name_tag').innerHTML = name;
+      document.getElementById('submit-btn').disabled = false;
     });
   };
 
-  navigator.geolocation.getCurrentPosition(success, error, options);
+  if (!navigator.geolocation) {
+    console.warn('Geolocation is not supported or not available (page may not be served over HTTPS).');
+  } else {
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }
 });
 

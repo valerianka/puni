@@ -27,7 +27,7 @@
       <%= text_area_tag(:comment, "", rows: 5, 
                         class: 'form-control') %>
     </div>
-    <%= submit_tag "Submit your rating", class: "btn btn-primary btn-lg btn-block" %>
+    <%= submit_tag "Submit your rating", class: "btn btn-primary btn-lg btn-block", disabled: true, id: "submit-btn" %>
 
   <% end %>
   <hr>
