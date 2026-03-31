@@ -79,7 +79,12 @@ body {
   margin-bottom: 16px;
 
   &__icons {
+    display: flex;
     align-items: center;
+
+    [class*="col-"] {
+      float: none;
+    }
   }
 
   &__icon-col {
@@ -88,7 +93,6 @@ body {
 
   &__icon {
     width: 65%;
-    max-height: 60px;
     height: auto;
   }
 
