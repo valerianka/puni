@@ -11,9 +11,10 @@ export DISABLE_SPRING=1
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
-# Stamp the dev DB environment so Rails doesn't print a 60-line backtrace
-# before every test run (harmless one-time fix for missing AR schema metadata)
+# Stamp both DB environments so Rails doesn't print a 60-line backtrace
+# before every test run (harmless fix for missing AR schema metadata)
 bundle exec rails db:environment:set RAILS_ENV=development 2>/dev/null || true
+RAILS_ENV=test bundle exec rails db:environment:set 2>/dev/null || true
 
 echo "🧪 Running unit + integration tests..."
 
