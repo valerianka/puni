@@ -76,9 +76,32 @@ body {
 
 // Block: slider
 .slider {
+  margin-bottom: 16px;
+
+  &__icons {
+    align-items: center;
+  }
+
+  &__icon-col {
+    text-align: center;
+  }
+
   &__icon {
     width: 65%;
+    max-height: 60px;
     height: auto;
+  }
+
+  &__label-col {
+    text-align: center;
+  }
+
+  &__label {
+    margin: 0;
+  }
+
+  &__track-row {
+    padding-top: 12px;
   }
 
   &__input {
