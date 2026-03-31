@@ -10,6 +10,8 @@ $(document).ready(function(){
     debugEl.scrollTop = debugEl.scrollHeight;
   }
 
+  $('#submit-btn').prop('disabled', true);
+
   hidePopup();
 
   var options = {
@@ -194,8 +196,7 @@ $(document).ready(function(){
     }).done(function(content){
       $('#route_name').val(name);
       document.getElementById('route_name_tag').innerHTML = name;
-      var submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) { submitBtn.disabled = false; } else { iphoneDebug('WARN: submit-btn not found'); }
+      $('#submit-btn').prop('disabled', false);
       iphoneDebug('Route set: ' + name);
       try {
         <% image_names = [] %>
