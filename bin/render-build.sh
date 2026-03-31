@@ -8,3 +8,4 @@ bundle exec rake assets:clobber
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
 bundle exec rails db:prepare
+bundle exec rails db:migrate
