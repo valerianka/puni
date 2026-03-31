@@ -1,3 +1,5 @@
+//= require jquery.ui.touch-punch
+
 $(() => {
   const GEO_OPTIONS = {
     enableHighAccuracy: true,
@@ -44,8 +46,7 @@ $(() => {
     $.ajax({ url: `/munis/${name}/average` })
       .done(content => {
         $('#route_name').val(name);
-        const routeTag = document.getElementById('route_name_tag');
-        if (routeTag) routeTag.textContent = name;
+        document.getElementById('route_name_tag').textContent = name;
         $('#submit-btn').removeAttr('disabled').prop('disabled', false);
         try {
           <% image_names = [] %>
@@ -106,7 +107,7 @@ $(() => {
   const onGeolocationSuccess = (pos) => {
     const coords = pos.coords;
     processBusLocations(coords, vehicles => {
-      document.getElementById('route_name_tag')?.addEventListener('click', () => {
+      document.getElementById('route_name_tag').addEventListener('click', () => {
         $('#popup').show();
         initMap(coords, vehicles);
       });
@@ -125,12 +126,11 @@ $(() => {
   // Init
   hidePopup();
 
-  document.getElementById('popup')?.addEventListener('click', hidePopup);
-  document.getElementById('popup-1')?.addEventListener('click', e => e.stopPropagation());
+  document.getElementById('popup').addEventListener('click', hidePopup);
+  document.getElementById('popup-1').addEventListener('click', e => e.stopPropagation());
 
   ['range_smell', 'range_driver', 'range_clean'].forEach(id => {
     const el = document.getElementById(id);
-    if (!el) return;
     const roundValue = () => { el.value = Math.round(el.value); };
     el.addEventListener('mouseup', roundValue);
     el.addEventListener('touchend', roundValue);

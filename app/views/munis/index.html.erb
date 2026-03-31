@@ -34,4 +34,7 @@
   </div>
 </div>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>"></script>
+<% content_for :page_scripts do %>
+  <%= javascript_include_tag 'munis_index' %>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>"></script>
+<% end %>
