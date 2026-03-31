@@ -18,7 +18,7 @@
 
     <div class="rating-form__story">
       <h3 class="rating-form__story-label"><label for="comment">Horror story</label></h3>
-      <%= text_area_tag(:comment, "", rows: 5, class: "rating-form__story-input form-control") %>
+      <%= text_area_tag(:comment, "", rows: 5, class: "rating-form__story-input form-control", maxlength: 1000) %>
     </div>
 
     <%= submit_tag "Submit your rating", class: "rating-form__submit btn btn-primary btn-lg btn-block", disabled: true, id: "submit-btn" %>
