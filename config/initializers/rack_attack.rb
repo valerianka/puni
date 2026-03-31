@@ -1,7 +1,8 @@
 class Rack::Attack
-  # Use the Rails cache store (memory in dev/test, configure Redis in production
-  # if running multiple Puma workers to share state across processes)
-  Rack::Attack.cache.store = Rails.cache
+  # Use a dedicated MemoryStore so throttle counters work regardless of whether
+  # the Rails cache is enabled (dev uses NullStore by default unless rails dev:cache
+  # is active). For multi-process production deployments swap this for Redis.
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
   # ---- Throttles -------------------------------------------------------
 
