@@ -44,7 +44,8 @@ $(() => {
     $.ajax({ url: `/munis/${name}/average` })
       .done(content => {
         $('#route_name').val(name);
-        document.getElementById('route_name_tag').textContent = name;
+        const routeTag = document.getElementById('route_name_tag');
+        if (routeTag) routeTag.textContent = name;
         $('#submit-btn').removeAttr('disabled').prop('disabled', false);
         try {
           <% image_names = [] %>
