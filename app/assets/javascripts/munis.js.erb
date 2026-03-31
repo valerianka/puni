@@ -1,16 +1,13 @@
 $(document).ready(function(){
-  var isIphone = /iPhone/i.test(navigator.userAgent);
+  var debugEl = document.createElement('div');
+  debugEl.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);color:#fff;font-size:12px;padding:8px;z-index:9999;word-break:break-all;max-height:40vh;overflow-y:auto;';
+  debugEl.innerHTML = '<b>DEBUG (tap to dismiss)</b><br>';
+  debugEl.addEventListener('click', function(){ debugEl.style.display = 'none'; });
+  document.body.appendChild(debugEl);
 
   function iphoneDebug(msg) {
-    if (!isIphone) return;
-    var el = document.getElementById('iphone-debug');
-    if (!el) {
-      el = document.createElement('div');
-      el.id = 'iphone-debug';
-      el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.8);color:#fff;font-size:12px;padding:8px;z-index:9999;word-break:break-all;';
-      document.body.appendChild(el);
-    }
-    el.innerHTML += msg + '<br>';
+    debugEl.innerHTML += msg + '<br>';
+    debugEl.scrollTop = debugEl.scrollHeight;
   }
 
   hidePopup();
@@ -195,18 +192,26 @@ $(document).ready(function(){
     $.ajax({
       url: '/munis/' + name + '/average'
     }).done(function(content){
-      if (content != null) {
+      $('#route_name').val(name);
+      document.getElementById('route_name_tag').innerHTML = name;
+      var submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) { submitBtn.disabled = false; } else { iphoneDebug('WARN: submit-btn not found'); }
+      iphoneDebug('Route set: ' + name);
+      try {
         <% image_names = [] %>
         <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
         var imagePaths = <%= image_names.map{|img| asset_path "#{img}"} %>;
-        setImages(imagePaths[content.avg_driver_rating - 1],
-                  imagePaths[content.avg_smell_rating + 5 - 1], 
-                  imagePaths[content.avg_clean_rating + 10 - 1]);
-      } else setDefaultImages();
-      $('#route_name').val(name);
-      document.getElementById('route_name_tag').innerHTML = name;
-      document.getElementById('submit-btn').disabled = false;
-      iphoneDebug('Route set: ' + name);
+        if (content && content.avg_driver_rating != null) {
+          setImages(imagePaths[content.avg_driver_rating - 1],
+                    imagePaths[content.avg_smell_rating + 5 - 1],
+                    imagePaths[content.avg_clean_rating + 10 - 1]);
+        } else {
+          setDefaultImages();
+        }
+      } catch(e) {
+        iphoneDebug('setImages ERR: ' + e.message);
+        setDefaultImages();
+      }
     }).fail(function(xhr, status, err) {
       iphoneDebug('Averages AJAX failed: ' + status + ' ' + err + ' (' + xhr.status + ')');
     });
