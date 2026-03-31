@@ -10,6 +10,7 @@ Rails.application.configure do
   config.log_level = :info
   config.i18n.fallbacks = true
   config.log_formatter = Logger::Formatter.new
+  config.force_ssl = true
   config.active_record.dump_schema_after_migration = false
   config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 end

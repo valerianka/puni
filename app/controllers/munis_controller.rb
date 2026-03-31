@@ -7,16 +7,15 @@ class MunisController < ApplicationController
   end
 
   def show
-    muni = Muni.find_or_create_by(route_name: params[:route_name])
-    report = muni.reports.build(smell_rating: params[:smell_rating], clean_rating: params[:clean_rating],
-                                driver_rating: params[:driver_rating])
+    muni = Muni.find_or_create_by(route_name: params.require(:route_name))
+    report = muni.reports.build(report_params)
     unless report.save
       flash[:danger] = 'Invalid ratings. Each must be a number from 1 to 5.'
       redirect_back_or_to(root_path)
       return
     end
     muni.update_averages
-    report.create_story(content: params[:comment]) if params[:comment].present?
+    report.create_story(content: params.permit(:comment)[:comment]) if params[:comment].present?
     if muni.save
       @munis = Muni.sorted_munis
       render :show
@@ -50,7 +49,13 @@ class MunisController < ApplicationController
   end
 
   def average
-    muni = Muni.find_by(route_name: params[:route_name])
+    muni = Muni.find_by(route_name: params.permit(:route_name)[:route_name])
     render json: muni
+  end
+
+  private
+
+  def report_params
+    params.permit(:smell_rating, :clean_rating, :driver_rating)
   end
 end

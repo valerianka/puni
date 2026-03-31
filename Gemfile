@@ -43,7 +43,6 @@ end
 
 group :development do
   gem 'web-console', '~> 4.2'
-  gem 'spring'
 end
 
 group :production do
