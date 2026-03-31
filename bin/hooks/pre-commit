@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RUBOCOP="$HOME/.rvm/rubies/ruby-3.3.0/bin/ruby $HOME/.rvm/rubies/ruby-3.3.0/bin/rubocop"
+export SSL_CERT_FILE=/etc/ssl/cert.pem
+
+# Collect staged Ruby files that exist on disk
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep '\.rb$' || true)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+echo "🔍 RuboCop: checking staged Ruby files..."
+
+# Run safe auto-correct in-place
+$RUBOCOP --autocorrect $STAGED --format quiet 2>/dev/null || true
+
+# Re-stage any files rubocop modified
+git add $STAGED
+
+# Now run the full check (no auto-correct) — fail if anything uncorrectable remains
+if ! $RUBOCOP $STAGED --format simple; then
+  echo ""
+  echo "❌ RuboCop found offenses that can't be auto-corrected."
+  echo "   Fix them manually, then run: git add <file> && git commit"
+  exit 1
+fi
+
+echo "✅ RuboCop: all good"

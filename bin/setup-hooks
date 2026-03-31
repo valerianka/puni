@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+HOOKS_SRC="$REPO_ROOT/bin/hooks"
+HOOKS_DST="$REPO_ROOT/.git/hooks"
+
+echo "Installing git hooks from bin/hooks/ ..."
+
+for hook in "$HOOKS_SRC"/*; do
+  name="$(basename "$hook")"
+  target="$HOOKS_DST/$name"
+
+  # Remove existing file/symlink so we can replace it cleanly
+  [ -e "$target" ] || [ -L "$target" ] && rm "$target"
+
+  ln -sf "../../bin/hooks/$name" "$target"
+  echo "  ✓ $name → .git/hooks/$name"
+done
+
+echo "Done. Hooks are symlinked — edits to bin/hooks/ take effect immediately."
