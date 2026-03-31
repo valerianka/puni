@@ -1,7 +1,7 @@
 $(document).ready(function(){
   var debugEl = document.createElement('div');
-  debugEl.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);color:#fff;font-size:12px;padding:8px;z-index:9999;word-break:break-all;max-height:40vh;overflow-y:auto;';
-  debugEl.innerHTML = '<b>DEBUG (tap to dismiss)</b><br>';
+  debugEl.setAttribute('style', 'position:fixed !important;bottom:10px !important;left:10px !important;right:10px !important;background:red !important;color:white !important;font-size:14px !important;font-weight:bold !important;padding:10px !important;z-index:2147483647 !important;word-break:break-all;border:3px solid yellow !important;');
+  debugEl.innerHTML = 'DEBUG LOADED<br>';
   debugEl.addEventListener('click', function(){ debugEl.style.display = 'none'; });
   document.body.appendChild(debugEl);
 
@@ -196,7 +196,7 @@ $(document).ready(function(){
     }).done(function(content){
       $('#route_name').val(name);
       document.getElementById('route_name_tag').innerHTML = name;
-      $('#submit-btn').prop('disabled', false);
+      $('#submit-btn').removeAttr('disabled').prop('disabled', false);
       iphoneDebug('Route set: ' + name);
       try {
         <% image_names = [] %>
