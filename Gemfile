@@ -48,5 +48,4 @@ end
 
 group :production do
   gem 'pg', '~> 1.1'
-  gem 'redis', '~> 5.0'
 end

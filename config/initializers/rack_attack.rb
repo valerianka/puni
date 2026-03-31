@@ -1,16 +1,11 @@
 class Rack::Attack
-  # Use Redis in production so throttle counters are shared across Puma workers.
-  # Falls back to MemoryStore in dev/test (per-process, sufficient for single-worker use).
-  Rack::Attack.cache.store = if ENV['REDIS_URL']
-                               ActiveSupport::Cache::RedisCacheStore.new(url: ENV['REDIS_URL'])
-                             else
-                               ActiveSupport::Cache::MemoryStore.new
-                             end
+  # MemoryStore works correctly with a single Puma worker (WEB_CONCURRENCY=1).
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
   # ---- Throttles -------------------------------------------------------
 
-  # Rating submissions: max 5 per IP per 10 minutes
-  throttle('ratings/ip', limit: 5, period: 10.minutes) do |req|
+  # Rating submissions: max 3 per IP per 10 minutes
+  throttle('ratings/ip', limit: 3, period: 10.minutes) do |req|
     req.ip if req.post? && req.path == '/leaderboard'
   end
 
