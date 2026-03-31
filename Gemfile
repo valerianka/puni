@@ -47,4 +47,6 @@ end
 
 group :production do
   gem 'pg', '~> 1.1'
+  gem 'sentry-ruby', '~> 5.0'
+  gem 'sentry-rails', '~> 5.0'
 end
