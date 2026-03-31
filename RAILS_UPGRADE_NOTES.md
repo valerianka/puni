@@ -108,7 +108,3 @@ RVM may shadow Homebrew Ruby. Fix by adding to `~/.zshrc`:
 export PATH=/opt/homebrew/opt/ruby/bin:$PATH
 ```
 
-### Dev Mode Workarounds
-Two TODOs remain in the code for when a real 511.org API key is available:
-1. `app/javascript/munis.js.erb` — distance check disabled, always picks nearest mock bus
-2. `MunisController#vehicles` — returns `MOCK_VEHICLES` instead of live API data
