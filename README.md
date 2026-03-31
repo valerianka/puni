@@ -10,7 +10,37 @@ Application uses geolocation feature to determine user's current location and fi
 
 Real-time bus locations are fetched from the [511.org Transit API](https://511.org/open-data/transit).
 Integration with Google Maps shows live Muni locations on the map.
- 
+
+## Local Setup
+
+**Requirements:** Ruby 4.0.2 via Homebrew, SQLite
+
+If RVM is in your PATH, make sure Homebrew Ruby takes precedence by adding this to `~/.zshrc`:
+
+```bash
+export PATH=/opt/homebrew/opt/ruby/bin:$PATH
+```
+
+**Install and run:**
+
+```bash
+bundle install
+bundle exec rails db:create db:migrate
+bundle exec rails server
+```
+
+App runs at **http://localhost:3000**
+
+**Run tests:**
+
+```bash
+bundle exec rails test
+bundle exec rails test:system
+```
+
+**Environment variables** (optional for local dev):
+- `MUNI_511_API_KEY` — 511.org API key for live bus data. Without it the app uses mock bus data.
+- `GOOGLE_MAPS_API_KEY` — required for the map to render.
 
 Future development
 -------
