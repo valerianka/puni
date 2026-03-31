@@ -1,4 +1,18 @@
 $(document).ready(function(){
+  var isIphone = /iPhone/i.test(navigator.userAgent);
+
+  function iphoneDebug(msg) {
+    if (!isIphone) return;
+    var el = document.getElementById('iphone-debug');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'iphone-debug';
+      el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.8);color:#fff;font-size:12px;padding:8px;z-index:9999;word-break:break-all;';
+      document.body.appendChild(el);
+    }
+    el.innerHTML += msg + '<br>';
+  }
+
   hidePopup();
 
   var options = {
@@ -15,6 +29,7 @@ $(document).ready(function(){
 
   function success(pos) {
     console.log(pos);
+    iphoneDebug('GEO OK: lat=' + pos.coords.latitude.toFixed(4) + ' lng=' + pos.coords.longitude.toFixed(4) + ' acc=' + Math.round(pos.coords.accuracy) + 'm');
     var coordinates = pos.coords;
     processBusLocations(coordinates, function(vehicles){
       document.getElementById('route_name_tag').addEventListener('click', function(){
@@ -26,9 +41,12 @@ $(document).ready(function(){
 
   function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
+    iphoneDebug('GEO ERR ' + err.code + ': ' + err.message);
     if (err.code === 3) { // TIMEOUT — retry with lower accuracy (faster on iOS Safari)
+      iphoneDebug('Retrying with low accuracy...');
       navigator.geolocation.getCurrentPosition(success, function(err2) {
         console.warn('Low accuracy fallback failed (' + err2.code + '): ' + err2.message);
+        iphoneDebug('Fallback ERR ' + err2.code + ': ' + err2.message);
       }, lowAccuracyOptions);
     }
   };
@@ -39,7 +57,8 @@ $(document).ready(function(){
     }).done(function(data){
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       var vehicles = data.items;
-      console.log(vehicles.length)
+      console.log(vehicles.length);
+      iphoneDebug('Vehicles loaded: ' + vehicles.length + ', nearest: ' + (vehicles[0] && vehicles[0].route_id));
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
@@ -182,7 +201,9 @@ $(document).ready(function(){
 
   if (!navigator.geolocation) {
     console.warn('Geolocation is not supported or not available (page may not be served over HTTPS).');
+    iphoneDebug('navigator.geolocation unavailable — check HTTPS');
   } else {
+    iphoneDebug('Requesting geolocation...');
     navigator.geolocation.getCurrentPosition(success, error, options);
   }
 });
