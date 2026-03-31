@@ -81,7 +81,6 @@ GEM
       execjs (~> 2)
     base64 (0.3.0)
     benchmark (0.5.0)
-    betterlorem (0.1.2)
     bigdecimal (4.0.1)
     bindex (0.8.1)
     bootsnap (1.23.0)
@@ -128,9 +127,6 @@ GEM
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     json (2.19.3)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
@@ -271,8 +267,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (2.6.5)
-      rdoc (>= 5.0)
     securerandom (0.4.1)
     selenium-webdriver (4.41.0)
       base64 (~> 0.2)
@@ -334,7 +328,6 @@ PLATFORMS
 
 DEPENDENCIES
   benchmark
-  betterlorem (~> 0.1.2)
   bigdecimal
   bootsnap (>= 1.4.2)
   bootstrap-sass
@@ -342,7 +335,6 @@ DEPENDENCIES
   byebug
   capybara (~> 3.40)
   irb
-  jbuilder (~> 2.0)
   mutex_m
   ostruct
   pg (~> 1.1)
@@ -353,7 +345,6 @@ DEPENDENCIES
   rubocop-performance (~> 1.21)
   rubocop-rails (~> 2.25)
   sass-rails (~> 6.0)
-  sdoc (~> 2.0)
   selenium-webdriver (~> 4.27)
   sentry-rails (~> 5.0)
   sentry-ruby (~> 5.0)
@@ -382,7 +373,6 @@ CHECKSUMS
   autoprefixer-rails (10.4.21.0) sha256=71b48caf850fc25275abd96f0b1fdd51c82e1c9b99cd30085cacb05da9c70235
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   benchmark (0.5.0) sha256=465df122341aedcb81a2a24b4d3bd19b6c67c1530713fd533f3ff034e419236c
-  betterlorem (0.1.2) sha256=9df5b186046370473364a8d44378bd572dd9b050402552f5fef1fc11b7770b7f
   bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   bootsnap (1.23.0) sha256=c1254f458d58558b58be0f8eb8f6eec2821456785b7cdd1e16248e2020d3f214
@@ -408,7 +398,6 @@ CHECKSUMS
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
   irb (1.17.0) sha256=168c4ddb93d8a361a045c41d92b2952c7a118fa73f23fe14e55609eb7a863aae
-  jbuilder (2.13.0) sha256=7200a38a1c0081aa81b7a9757e7a299db75bc58cf1fd45ca7919a91627d227d6
   json (2.19.3) sha256=289b0bb53052a1fa8c34ab33cc750b659ba14a5c45f3fcf4b18762dc67c78646
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
@@ -465,7 +454,6 @@ CHECKSUMS
   sass-rails (6.0.0) sha256=e0b6448ea1c7929fd5929fc7a8eb2d78045e44cc82fc0765a249d3fa1c5810d3
   sassc (2.4.0) sha256=4c60a2b0a3b36685c83b80d5789401c2f678c1652e3288315a1551d811d9f83e
   sassc-rails (2.1.2) sha256=5f4fdf3881fc9bdc8e856ffbd9850d70a2878866feae8114aa45996179952db5
-  sdoc (2.6.5) sha256=7998b61c10775ee3179ccb0253774332d139e2c0649c251091f5868107a09b86
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-webdriver (4.41.0) sha256=cdc1173cd55cf186022cea83156cc2d0bec06d337e039b02ad25d94e41bedd22
   sentry-rails (5.28.1) sha256=43a5f884622c60fa459ba05dc8bd22fbd5f28daaced1d00dbcfc4669eaf93807
