@@ -200,18 +200,30 @@ body {
 
 // Block: stink-winner
 .stink-winner {
-  padding: 16px;
+  padding: 16px 0;
+  align-items: center;
+
+  &__route-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &__route {
     font-size: 2rem;
     font-weight: bold;
+    margin: 0;
+  }
+
+  &__stat-col {
+    text-align: center;
   }
 
   &__stat {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    justify-content: center;
+    gap: 4px;
   }
 
   &__stat-image {
