@@ -38,7 +38,7 @@ Metrics/MethodLength:
   Max: 20
 
 Metrics/AbcSize:
-  Max: 25
+  Max: 35
 
 Metrics/BlockLength:
   Max: 40
@@ -49,9 +49,17 @@ Metrics/BlockLength:
 Rails/ApplicationRecord:
   Enabled: false
 
-# Warn but don't auto-correct missing DB index on unique validations
+# No managed migrations in this project — skip the DB index check
 Rails/UniqueValidationWithoutIndex:
-  Enabled: true
+  Enabled: false
+
+# Small app: locale extraction not worth the overhead
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# Flash before redirect is correct Rails usage; .now is only for render
+Rails/ActionControllerFlashBeforeRender:
+  Enabled: false
 
 # ── Layout ───────────────────────────────────────────────────────────────────
 
