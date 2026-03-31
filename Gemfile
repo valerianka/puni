@@ -18,6 +18,8 @@ gem 'sdoc', '~> 2.0', group: :doc
 
 gem 'puma', '~> 6.0'
 gem 'rack-attack', '~> 6.7'
+gem 'sentry-ruby', '~> 5.0'
+gem 'sentry-rails', '~> 5.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 # Stdlib gems moved out in Ruby 3.4+; required by Rails + Ruby 4.0
 gem 'mutex_m'
@@ -47,6 +49,4 @@ end
 
 group :production do
   gem 'pg', '~> 1.1'
-  gem 'sentry-ruby', '~> 5.0'
-  gem 'sentry-rails', '~> 5.0'
 end
