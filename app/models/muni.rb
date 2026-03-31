@@ -22,7 +22,7 @@ class Muni < ActiveRecord::Base
   end
 
   def average_of(attr)
-    reports.inject(0){ |accum, elem| accum + elem.send(attr) } / reports.count
+    (reports.inject(0.0) { |sum, r| sum + r.send(attr) } / reports.count).round
   end
 
   def average_sum
