@@ -7,9 +7,9 @@ Rails.application.configure do
   config.assets.js_compressor = Terser.new
   config.assets.compile = false
   config.assets.digest = true
-  config.log_level = :debug
+  config.log_level = :info
   config.i18n.fallbacks = true
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
   config.active_record.dump_schema_after_migration = false
   config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 end
