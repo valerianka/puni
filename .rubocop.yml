@@ -1,0 +1,57 @@
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.3
+  Exclude:
+    - "db/schema.rb"
+    - "db/migrate/**/*"
+    - "vendor/**/*"
+    - "bin/**/*"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
+
+# ── Style ────────────────────────────────────────────────────────────────────
+
+# Not worth the noise in a small Rails app
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Class-level comments aren't needed here
+Style/Documentation:
+  Enabled: false
+
+# Prefer double quotes everywhere (matches ERB convention)
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# ── Metrics ──────────────────────────────────────────────────────────────────
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/BlockLength:
+  Max: 40
+
+# ── Rails ────────────────────────────────────────────────────────────────────
+
+# Models inherit from ActiveRecord::Base — leave for a dedicated refactor
+Rails/ApplicationRecord:
+  Enabled: false
+
+# Warn but don't auto-correct missing DB index on unique validations
+Rails/UniqueValidationWithoutIndex:
+  Enabled: true
+
+# ── Layout ───────────────────────────────────────────────────────────────────
+
+Layout/LineLength:
+  Max: 120
+  AllowedPatterns:
+    - "\\A\\s*#"   # comments

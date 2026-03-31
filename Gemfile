@@ -34,6 +34,9 @@ group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 4.2'
   gem 'spring'
+  gem 'rubocop', '~> 1.65', require: false
+  gem 'rubocop-rails', '~> 2.25', require: false
+  gem 'rubocop-performance', '~> 1.21', require: false
 end
 
 group :production do
