@@ -1,33 +1,31 @@
-<div class="row">
-  <div class="col-xs-6" align="center">
-    <div class="window">
-      <h2 id="route_name_tag">?</h2>
-      <h2>Route</h2>
+<div class="bus__windows-row row">
+  <div class="bus__window-col col-xs-6">
+    <div class="bus__window">
+      <h2 class="bus__route" id="route_name_tag">?</h2>
+      <p class="bus__window-label">Route</p>
     </div>
-
   </div>
-  <div class="col-xs-6" align="center">
-    <div class="window">
-      <div id="driver-score">
-        <%= image_tag "Question_mark.png", alt: "question_mark", width: '70' %>
+  <div class="bus__window-col col-xs-6">
+    <div class="bus__window">
+      <div class="bus__score" id="driver-score">
+        <%= image_tag "Question_mark.png", alt: "?" %>
       </div>
-      <h2>Driver</h2>
+      <p class="bus__window-label">Driver</p>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-6" align="center">
-    <div class="avg" id="smell-score">
-      <%= image_tag "Question_mark.png", alt: "question_mark", width: '50' %>
-    </div> 
-    <br>
-    <h2>Smell Meter</h2>
-  </div>
-  <div class="col-xs-6" align="center">
-    <div class="avg" id="clean-score">
-      <%= image_tag "Question_mark.png", alt: "question_mark", width: '50' %>
+
+<div class="bus__meters-row row">
+  <div class="bus__meter-col col-xs-6">
+    <div class="bus__meter" id="smell-score">
+      <%= image_tag "Question_mark.png", alt: "?" %>
     </div>
-    <br>
-    <h2>Clean Meter</h2>
+    <p class="bus__meter-label">Smell Meter</p>
+  </div>
+  <div class="bus__meter-col col-xs-6">
+    <div class="bus__meter" id="clean-score">
+      <%= image_tag "Question_mark.png", alt: "?" %>
+    </div>
+    <p class="bus__meter-label">Clean Meter</p>
   </div>
 </div>

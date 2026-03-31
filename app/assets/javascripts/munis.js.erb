@@ -1,203 +1,142 @@
-$(document).ready(function(){
-$('#submit-btn').prop('disabled', true);
-
-  hidePopup();
-
-  var options = {
+$(() => {
+  const GEO_OPTIONS = {
     enableHighAccuracy: true,
     timeout: 30000,
     maximumAge: 0
   };
 
-  var lowAccuracyOptions = {
+  const GEO_LOW_ACCURACY_OPTIONS = {
     enableHighAccuracy: false,
     timeout: 15000,
     maximumAge: 0
   };
 
-  function success(pos) {
-    console.log(pos);
-    var coordinates = pos.coords;
-    processBusLocations(coordinates, function(vehicles){
-      document.getElementById('route_name_tag').addEventListener('click', function(){
-        $("#popup").show();
-        initMap(coordinates, vehicles);
-      })
-    });
+  const hidePopup = () => $('#popup').hide();
+
+  const setImages = (driverPath, smellPath, cleanPath) => {
+    $('#driver-score').empty().prepend(`<img id="Driver_img" src="${driverPath}">`);
+    $('#smell-score').empty().prepend(`<img id="Smell_img" src="${smellPath}">`);
+    $('#clean-score').empty().prepend(`<img id="Clean_img" src="${cleanPath}">`);
   };
 
-  function error(err) {
-    console.warn('ERROR(' + err.code + '): ' + err.message);
-    if (err.code === 3) { // TIMEOUT — retry with lower accuracy (faster on iOS Safari)
-      navigator.geolocation.getCurrentPosition(success, function(err2) {
-        console.warn('Low accuracy fallback failed (' + err2.code + '): ' + err2.message);
-      }, lowAccuracyOptions);
-    }
+  const setDefaultImages = () => {
+    const path = '<%= asset_path "Question_mark.png" %>';
+    setImages(path, path, path);
   };
 
-  var processBusLocations = function(coords, completionHandler){
-    $.ajax({
-      url: "/munis/vehicles",
-    }).done(function(data){
-      var vehicles = data.items;
-      if (!vehicles || vehicles.length === 0) {
-        return;
+  const distanceBetweenPoints = (a, b) =>
+    Math.sqrt((a.latitude - b.latitude) ** 2 + (a.longitude - b.longitude) ** 2);
+
+  const sortVehiclesByRoute = (data) =>
+    data.items.map(item => {
+      let i = 0, num = 0;
+      while (item.route_id[i] >= '0' && item.route_id[i] <= '9') {
+        num = num * 10 + Number(item.route_id[i++]);
       }
-      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
-      vehicles.sort(function(a, b){
-        return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
-      });
-      var nearest = vehicles[0];
-      var dist = distanceBetweenPoints(nearest, coords);
-      // TODO: restore distance check for production (< 0.003 degrees ≈ 300m)
-      // if (dist < 0.003) {
-      getAverages(nearest.route_id);
-      // } else setDefaultImages();
-      completionHandler(vehicles);
-    }).fail(function(xhr, status, err) {
-    });
-  };
+      return { routeId: item.route_id, routeNum: num };
+    }).sort((a, b) => a.routeNum !== b.routeNum
+      ? a.routeNum - b.routeNum
+      : a.routeId.localeCompare(b.routeId));
 
-  function initMap(coords, vehicles) {
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: coords.latitude, lng: coords.longitude},
-      zoom: 15
-    });
-    console.log("in init map");
-    // document.getElementById()
-    for (var i = 0, len = vehicles.length; i < len; i++) {
-      var busesCoordinates = new google.maps.LatLng(vehicles[i].latitude, vehicles[i].longitude);
-      var marker = new google.maps.Marker({
-        position: busesCoordinates,
-        map: map
-      });
-      marker.setMap(map);
-      var content = document.createElement("a");       
-      var text = document.createTextNode(vehicles[i].route_id);       
-      content.appendChild(text);
-      content.addEventListener('click', (function(routeId){
-        return function(){
-          hidePopup();
-          getAverages(routeId);
-        };
-      })(vehicles[i].route_id));                               
-      var infowindow = new google.maps.InfoWindow();
-      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
-        return function() {
-          infowindow.setContent(content);
-                 
-          infowindow.open(map,marker);
-        };
-      })(marker,content,infowindow));
-    }
-  }
+  const uniqueRouteIds = (vehicles) => [...new Set(vehicles.map(v => v.routeId))];
 
-
-  function hidePopup() {
-    $("#popup").hide();
-  };
-  document.getElementById("popup").addEventListener("click", function(){
-    hidePopup();
-  });
-
-  document.getElementById("popup-1").addEventListener("click", function(event){
-    event.stopPropagation();
-  });
-
-  var elements = ["range_smell", "range_driver", "range_clean"];
-
-  for (var i = 0, len = elements.length; i < len; i++) {
-    var getHandler = function(element) {
-      return function (e) {
-        element.value = Math.round(element.value);
-      };
-    }
-    var elem = document.getElementById(elements[i]);
-    elem.addEventListener("mouseup", getHandler(elem), false);
-    elem.addEventListener("touchend", getHandler(elem), false);
-  }
-
-  var sortedVehiclesArray = function(data){
-    var vehicles = [];
-    data.items.forEach(function(item) {
-      var num = 0, i = 0;
-      vehicle = {};
-      vehicle.routeId = item.route_id;
-      while (vehicle.routeId[i] >= '0' && vehicle.routeId[i] <= '9') {
-        num = num * 10 + Number(vehicle.routeId[i]);
-        i++;
-      }
-      vehicle.routeNum = num;
-      vehicles.push(vehicle);
-    });
-    vehicles.sort(function(a, b){
-      if (a.routeNum === b.routeNum) {
-        return a.routeId > b.routeId ? 1 : a.routeId === b.routeId ? 0 : -1;
-      }
-      return a.routeNum > b.routeNum ? 1 : -1; 
-    });
-    return vehicles;
-  };
-
-  var formUniqueVehiclesArray = function(vehicles){
-    var uniqVehicles = [];
-      uniqVehicles[0] = vehicles[0].routeId;
-      var j = 0;
-      for (var i = 1, len = vehicles.length; i < len; i++) {
-        if (vehicles[i].routeId != uniqVehicles[j]) {
-          uniqVehicles[++j] = vehicles[i].routeId;
-        }
-      }
-      return uniqVehicles;
-  };
-
-  var distanceBetweenPoints = function(a, b){
-    return Math.sqrt(Math.pow((a.latitude - b.latitude), 2) + Math.pow((a.longitude - b.longitude), 2));
-  };
-
-  var setDefaultImages = function(){
-    var questionMarkImagePath = '<%= asset_path "Question_mark.png" %>';
-    setImages(questionMarkImagePath, questionMarkImagePath, questionMarkImagePath);
-  };
-
-  var setImages = function(driverImagePath, smellImagePath, cleanImagePath){
-    document.getElementById('driver-score').innerHTML = "";
-    document.getElementById('smell-score').innerHTML = "";
-    document.getElementById('clean-score').innerHTML = "";
-    $('#driver-score').prepend('<img id="Driver_img" src=' + driverImagePath + ' />');
-    $('#smell-score').prepend('<img id="Smell_img" src=' + smellImagePath + ' />');
-    $('#clean-score').prepend('<img id="Clean_img" src=' + cleanImagePath + ' />');
-  };
-
-  var getAverages = function(name){
-    $.ajax({
-      url: '/munis/' + name + '/average'
-    }).done(function(content){
-      $('#route_name').val(name);
-      document.getElementById('route_name_tag').innerHTML = name;
-      $('#submit-btn').removeAttr('disabled').prop('disabled', false);
-      try {
-        <% image_names = [] %>
-        <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
-        var imagePaths = <%= image_names.map{|img| asset_path(img) }.to_json %>;
-        if (content && content.avg_driver_rating != null) {
-          setImages(imagePaths[content.avg_driver_rating - 1],
-                    imagePaths[content.avg_smell_rating + 5 - 1],
-                    imagePaths[content.avg_clean_rating + 10 - 1]);
-        } else {
+  const getAverages = (name) => {
+    $.ajax({ url: `/munis/${name}/average` })
+      .done(content => {
+        $('#route_name').val(name);
+        document.getElementById('route_name_tag').textContent = name;
+        $('#submit-btn').removeAttr('disabled').prop('disabled', false);
+        try {
+          <% image_names = [] %>
+          <% ["Driver", "Smell", "Clean"].each { |attr| 5.times { |num| image_names.push("#{attr}_0#{num + 1}.png") } } %>
+          const imagePaths = <%= image_names.map { |img| asset_path(img) }.to_json %>;
+          if (content && content.avg_driver_rating != null) {
+            setImages(
+              imagePaths[content.avg_driver_rating - 1],
+              imagePaths[content.avg_smell_rating + 5 - 1],
+              imagePaths[content.avg_clean_rating + 10 - 1]
+            );
+          } else {
+            setDefaultImages();
+          }
+        } catch (e) {
           setDefaultImages();
         }
-      } catch(e) {
-        setDefaultImages();
-      }
-    }).fail(function(xhr, status, err) {
+      });
+  };
+
+  const processBusLocations = (coords, onComplete) => {
+    $.ajax({ url: '/munis/vehicles' })
+      .done(data => {
+        const vehicles = data.items;
+        if (!vehicles || !vehicles.length) return;
+        vehicles.sort((a, b) => distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords));
+        // TODO: restore distance check for production (< 0.003 degrees ≈ 300m)
+        getAverages(vehicles[0].route_id);
+        onComplete(vehicles);
+      })
+      .fail((xhr, status, err) => console.warn(`Vehicles request failed: ${status}`, err));
+  };
+
+  const initMap = (coords, vehicles) => {
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: coords.latitude, lng: coords.longitude },
+      zoom: 15
+    });
+    vehicles.forEach(vehicle => {
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(vehicle.latitude, vehicle.longitude),
+        map
+      });
+      const content = document.createElement('a');
+      content.textContent = vehicle.route_id;
+      content.addEventListener('click', () => {
+        hidePopup();
+        getAverages(vehicle.route_id);
+      });
+      const infowindow = new google.maps.InfoWindow();
+      marker.addListener('click', () => {
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+      });
     });
   };
 
+  const onGeolocationSuccess = (pos) => {
+    const coords = pos.coords;
+    processBusLocations(coords, vehicles => {
+      document.getElementById('route_name_tag').addEventListener('click', () => {
+        $('#popup').show();
+        initMap(coords, vehicles);
+      });
+    });
+  };
+
+  const onGeolocationError = (err) => {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+    if (err.code === 3) {
+      navigator.geolocation.getCurrentPosition(onGeolocationSuccess, err2 => {
+        console.warn(`Low accuracy fallback failed (${err2.code}): ${err2.message}`);
+      }, GEO_LOW_ACCURACY_OPTIONS);
+    }
+  };
+
+  // Init
+  hidePopup();
+
+  document.getElementById('popup').addEventListener('click', hidePopup);
+  document.getElementById('popup-1').addEventListener('click', e => e.stopPropagation());
+
+  ['range_smell', 'range_driver', 'range_clean'].forEach(id => {
+    const el = document.getElementById(id);
+    const roundValue = () => { el.value = Math.round(el.value); };
+    el.addEventListener('mouseup', roundValue);
+    el.addEventListener('touchend', roundValue);
+  });
+
   if (!navigator.geolocation) {
-    console.warn('Geolocation is not supported or not available (page may not be served over HTTPS).');
+    console.warn('Geolocation is not supported (check HTTPS).');
   } else {
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError, GEO_OPTIONS);
   }
 });
-

@@ -1,24 +1,18 @@
-<div class="jumbotron" align="center">
-  <div class="leader">
-    <div class="row">
-      <%= image_tag("puni-award.png") %>
-      <h3>PUNI Awards</h3>
-    </div>
+<header class="page-header">
+  <div class="award-display">
+    <%= image_tag "puni-award.png", alt: "Puni award", class: "award-display__image" %>
+    <h3 class="award-display__title">PUNI Awards</h3>
   </div>
-</div>
+</header>
 
-<div class="container" align="center">
-  <%= image_tag("puni_logo.png", width: '100') %>
-
-  <h2>Stink Champs</h2>
-  <div class="row">
-    <%= render 'shared/stink_winner', :winner => @munis.first if !@munis.nil? %>
-    <%= render 'shared/stink_winner', :winner => @munis.second if !@munis.second.nil? %>
-    <%= render 'shared/stink_winner', :winner => @munis.third if !@munis.third.nil? %>
+<main class="container leaderboard">
+  <%= image_tag "puni_logo.png", width: "100", alt: "Puni logo", class: "leaderboard__logo" %>
+  <h2 class="leaderboard__title">Stink Champs</h2>
+  <div class="row leaderboard__winners">
+    <%= render 'shared/stink_winner', winner: @munis.first if @munis %>
+    <%= render 'shared/stink_winner', winner: @munis.second if @munis&.second %>
+    <%= render 'shared/stink_winner', winner: @munis.third if @munis&.third %>
   </div>
-
-  <hr> 
-
+  <hr>
   <%= render 'shared/footer' %>
-
-</div>
+</main>
