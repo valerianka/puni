@@ -35,6 +35,12 @@ group :development, :test do
   gem 'rubocop', '~> 1.65', require: false
   gem 'rubocop-rails', '~> 2.25', require: false
   gem 'rubocop-performance', '~> 1.21', require: false
+  gem 'webmock', '~> 3.23'
+end
+
+group :test do
+  gem 'capybara', '~> 3.40'
+  gem 'selenium-webdriver', '~> 4.27'
 end
 
 group :development do

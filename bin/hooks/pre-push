@@ -11,11 +11,20 @@ export DISABLE_SPRING=1
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
-echo "🧪 Running test suite before push..."
+echo "🧪 Running unit + integration tests..."
 
 if ! bundle exec rails test; then
   echo ""
   echo "❌ Tests failed — push aborted."
+  echo "   Fix the failing tests, then push again."
+  exit 1
+fi
+
+echo "🖥️  Running system (UI) tests..."
+
+if ! bundle exec rails test:system; then
+  echo ""
+  echo "❌ System tests failed — push aborted."
   echo "   Fix the failing tests, then push again."
   exit 1
 fi

@@ -24,6 +24,10 @@ Style/FrozenStringLiteralComment:
 Style/Documentation:
   Enabled: false
 
+# Rails convention: open framework classes in compact style (e.g. class ActiveSupport::TestCase)
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 # Prefer double quotes everywhere (matches ERB convention)
 Style/StringLiterals:
   EnforcedStyle: single_quotes
