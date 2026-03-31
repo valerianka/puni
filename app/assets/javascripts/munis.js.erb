@@ -1,16 +1,5 @@
 $(document).ready(function(){
-  var debugEl = document.createElement('div');
-  debugEl.setAttribute('style', 'position:fixed !important;bottom:10px !important;left:10px !important;right:10px !important;background:red !important;color:white !important;font-size:14px !important;font-weight:bold !important;padding:10px !important;z-index:2147483647 !important;word-break:break-all;border:3px solid yellow !important;');
-  debugEl.innerHTML = 'DEBUG LOADED<br>';
-  debugEl.addEventListener('click', function(){ debugEl.style.display = 'none'; });
-  document.body.appendChild(debugEl);
-
-  function iphoneDebug(msg) {
-    debugEl.innerHTML += msg + '<br>';
-    debugEl.scrollTop = debugEl.scrollHeight;
-  }
-
-  $('#submit-btn').prop('disabled', true);
+$('#submit-btn').prop('disabled', true);
 
   hidePopup();
 
@@ -28,7 +17,6 @@ $(document).ready(function(){
 
   function success(pos) {
     console.log(pos);
-    iphoneDebug('GEO OK: lat=' + pos.coords.latitude.toFixed(4) + ' lng=' + pos.coords.longitude.toFixed(4) + ' acc=' + Math.round(pos.coords.accuracy) + 'm');
     var coordinates = pos.coords;
     processBusLocations(coordinates, function(vehicles){
       document.getElementById('route_name_tag').addEventListener('click', function(){
@@ -40,41 +28,33 @@ $(document).ready(function(){
 
   function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
-    iphoneDebug('GEO ERR ' + err.code + ': ' + err.message);
     if (err.code === 3) { // TIMEOUT — retry with lower accuracy (faster on iOS Safari)
-      iphoneDebug('Retrying with low accuracy...');
       navigator.geolocation.getCurrentPosition(success, function(err2) {
         console.warn('Low accuracy fallback failed (' + err2.code + '): ' + err2.message);
-        iphoneDebug('Fallback ERR ' + err2.code + ': ' + err2.message);
       }, lowAccuracyOptions);
     }
   };
 
   var processBusLocations = function(coords, completionHandler){
-    iphoneDebug('Fetching vehicles...');
     $.ajax({
       url: "/munis/vehicles",
     }).done(function(data){
       var vehicles = data.items;
       if (!vehicles || vehicles.length === 0) {
-        iphoneDebug('No vehicles returned from API');
         return;
       }
-      iphoneDebug('Vehicles: ' + vehicles.length);
       var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
       var nearest = vehicles[0];
       var dist = distanceBetweenPoints(nearest, coords);
-      iphoneDebug('Nearest: ' + nearest.route_id + ' dist=' + dist.toFixed(4) + ' (bus ' + nearest.latitude.toFixed(4) + ',' + nearest.longitude.toFixed(4) + ')');
       // TODO: restore distance check for production (< 0.003 degrees ≈ 300m)
       // if (dist < 0.003) {
       getAverages(nearest.route_id);
       // } else setDefaultImages();
       completionHandler(vehicles);
     }).fail(function(xhr, status, err) {
-      iphoneDebug('Vehicles AJAX failed: ' + status + ' ' + err + ' (' + xhr.status + ')');
     });
   };
 
@@ -190,14 +170,12 @@ $(document).ready(function(){
   };
 
   var getAverages = function(name){
-    iphoneDebug('Getting averages for: ' + name);
     $.ajax({
       url: '/munis/' + name + '/average'
     }).done(function(content){
       $('#route_name').val(name);
       document.getElementById('route_name_tag').innerHTML = name;
       $('#submit-btn').removeAttr('disabled').prop('disabled', false);
-      iphoneDebug('Route set: ' + name);
       try {
         <% image_names = [] %>
         <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
@@ -210,19 +188,15 @@ $(document).ready(function(){
           setDefaultImages();
         }
       } catch(e) {
-        iphoneDebug('setImages ERR: ' + e.message);
         setDefaultImages();
       }
     }).fail(function(xhr, status, err) {
-      iphoneDebug('Averages AJAX failed: ' + status + ' ' + err + ' (' + xhr.status + ')');
     });
   };
 
   if (!navigator.geolocation) {
     console.warn('Geolocation is not supported or not available (page may not be served over HTTPS).');
-    iphoneDebug('navigator.geolocation unavailable — check HTTPS');
   } else {
-    iphoneDebug('Requesting geolocation...');
     navigator.geolocation.getCurrentPosition(success, error, options);
   }
 });
