@@ -201,7 +201,7 @@ $(document).ready(function(){
       try {
         <% image_names = [] %>
         <% ["Driver", "Smell", "Clean"].each {|attr| 5.times{|num| image_names.push("#{attr}_0#{num + 1}.png")} } %>
-        var imagePaths = <%= image_names.map{|img| asset_path "#{img}"} %>;
+        var imagePaths = <%= image_names.map{|img| asset_path(img) }.to_json %>;
         if (content && content.avg_driver_rating != null) {
           setImages(imagePaths[content.avg_driver_rating - 1],
                     imagePaths[content.avg_smell_rating + 5 - 1],
