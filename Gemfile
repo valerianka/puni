@@ -32,11 +32,14 @@ gem 'benchmark'
 group :development, :test do
   gem 'sqlite3', '~> 1.4'
   gem 'byebug'
-  gem 'web-console', '~> 4.2'
-  gem 'spring'
   gem 'rubocop', '~> 1.65', require: false
   gem 'rubocop-rails', '~> 2.25', require: false
   gem 'rubocop-performance', '~> 1.21', require: false
+end
+
+group :development do
+  gem 'web-console', '~> 4.2'
+  gem 'spring'
 end
 
 group :production do

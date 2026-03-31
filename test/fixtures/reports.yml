@@ -1,11 +1,17 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+report_one:
+  smell_rating: 3
+  clean_rating: 4
+  driver_rating: 2
+  muni: geary
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+report_two:
+  smell_rating: 5
+  clean_rating: 5
+  driver_rating: 5
+  muni: geary
+
+report_three:
+  smell_rating: 2
+  clean_rating: 2
+  driver_rating: 2
+  muni: mission
