@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path('boot', __dir__)
 
 require 'rails/all'
 
@@ -21,5 +21,6 @@ module Puni
     # config.i18n.default_locale = :de
 
     config.load_defaults 7.2
+    config.middleware.use Rack::Attack
   end
 end
