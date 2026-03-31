@@ -176,9 +176,13 @@ body {
 .leaderboard {
   text-align: center;
 
+  &__logo-link {
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
   &__logo {
     display: block;
-    margin: 0 auto 16px;
   }
 
   &__title {
@@ -187,6 +191,10 @@ body {
 
   &__winners {
     justify-content: center;
+  }
+
+  &__cta {
+    margin: 16px 0;
   }
 }
 

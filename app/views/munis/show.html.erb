@@ -6,13 +6,17 @@
 </header>
 
 <main class="container leaderboard">
-  <%= image_tag "puni_logo.png", width: "100", alt: "Puni logo", class: "leaderboard__logo" %>
+  <%= link_to root_path, class: "leaderboard__logo-link" do %>
+    <%= image_tag "puni_logo.png", width: "100", alt: "Puni logo", class: "leaderboard__logo" %>
+  <% end %>
   <h2 class="leaderboard__title">Stink Champs</h2>
   <div class="row leaderboard__winners">
     <%= render 'shared/stink_winner', winner: @munis.first if @munis %>
     <%= render 'shared/stink_winner', winner: @munis.second if @munis&.second %>
     <%= render 'shared/stink_winner', winner: @munis.third if @munis&.third %>
   </div>
+  <hr>
+  <%= link_to "Rate Another Ride", root_path, class: "leaderboard__cta btn btn-primary btn-lg" %>
   <hr>
   <%= render 'shared/footer' %>
 </main>
