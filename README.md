@@ -11,6 +11,19 @@ Application uses geolocation feature to determine user's current location and fi
 Real-time bus locations are fetched from the [511.org Transit API](https://511.org/open-data/transit).
 Integration with Google Maps shows live Muni locations on the map.
 
+## Tech Stack
+
+- **Ruby** 4.0.2
+- **Rails** 7.2
+- **PostgreSQL** (production) / SQLite (development & test)
+- **Puma** 6 (web server)
+- **Bootstrap** 3.4 + SCSS via sass-rails
+- **Vanilla JS** — page-specific modules, no jQuery
+- **Rack::Attack** — rate limiting
+- **Sentry** — error monitoring (production)
+- **Google Maps API** — map and geolocation
+- **511.org Transit API** — real-time SF Muni bus positions
+
 ## Local Setup
 
 **Requirements:** Ruby 4.0.2 via Homebrew, SQLite
