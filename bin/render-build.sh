@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit
 
+export EXECJS_RUNTIME=Node
+
 bundle install
 bundle exec rake assets:clobber
 bundle exec rake assets:precompile
