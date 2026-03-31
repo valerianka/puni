@@ -3,6 +3,12 @@ require 'json'
 
 class MunisController < ApplicationController
   def index
+    begin
+      1 / 0
+    rescue ZeroDivisionError => e
+      Sentry.capture_exception(e)
+    end
+    Sentry.capture_message('test message')
     render :index, formats: [:html]
   end
 
