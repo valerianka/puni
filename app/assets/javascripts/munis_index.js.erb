@@ -1,6 +1,4 @@
-//= require jquery.ui.touch-punch
-
-$(() => {
+document.addEventListener('DOMContentLoaded', () => {
   const GEO_OPTIONS = {
     enableHighAccuracy: true,
     timeout: 30000,
@@ -13,12 +11,15 @@ $(() => {
     maximumAge: 0
   };
 
-  const hidePopup = () => $('#popup').hide();
+  const popup = document.getElementById('popup');
+
+  const hidePopup = () => { popup.style.display = 'none'; };
+  const showPopup = () => { popup.style.display = 'block'; };
 
   const setImages = (driverPath, smellPath, cleanPath) => {
-    $('#driver-score').empty().prepend(`<img id="Driver_img" src="${driverPath}">`);
-    $('#smell-score').empty().prepend(`<img id="Smell_img" src="${smellPath}">`);
-    $('#clean-score').empty().prepend(`<img id="Clean_img" src="${cleanPath}">`);
+    document.getElementById('driver-score').innerHTML = `<img id="Driver_img" src="${driverPath}">`;
+    document.getElementById('smell-score').innerHTML  = `<img id="Smell_img"  src="${smellPath}">`;
+    document.getElementById('clean-score').innerHTML  = `<img id="Clean_img"  src="${cleanPath}">`;
   };
 
   const setDefaultImages = () => {
@@ -43,11 +44,12 @@ $(() => {
   const uniqueRouteIds = (vehicles) => [...new Set(vehicles.map(v => v.routeId))];
 
   const getAverages = (name) => {
-    $.ajax({ url: `/munis/${name}/average` })
-      .done(content => {
-        $('#route_name').val(name);
+    fetch(`/munis/${name}/average`)
+      .then(res => res.json())
+      .then(content => {
+        document.getElementById('route_name').value = name;
         document.getElementById('route_name_tag').textContent = name;
-        $('#submit-btn').removeAttr('disabled').prop('disabled', false);
+        document.getElementById('submit-btn').disabled = false;
         try {
           <% image_names = [] %>
           <% ["Driver", "Smell", "Clean"].each { |attr| 5.times { |num| image_names.push("#{attr}_0#{num + 1}.png") } } %>
@@ -64,12 +66,14 @@ $(() => {
         } catch (e) {
           setDefaultImages();
         }
-      });
+      })
+      .catch(() => setDefaultImages());
   };
 
   const processBusLocations = (coords, onComplete) => {
-    $.ajax({ url: '/munis/vehicles' })
-      .done(data => {
+    fetch('/munis/vehicles')
+      .then(res => res.json())
+      .then(data => {
         const vehicles = data.items;
         if (!vehicles || !vehicles.length) return;
         vehicles.sort((a, b) => distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords));
@@ -77,7 +81,7 @@ $(() => {
         getAverages(vehicles[0].route_id);
         onComplete(vehicles);
       })
-      .fail((xhr, status, err) => console.warn(`Vehicles request failed: ${status}`, err));
+      .catch(err => console.warn('Vehicles request failed:', err));
   };
 
   const initMap = (coords, vehicles) => {
@@ -108,7 +112,7 @@ $(() => {
     const coords = pos.coords;
     processBusLocations(coords, vehicles => {
       document.getElementById('route_name_tag').addEventListener('click', () => {
-        $('#popup').show();
+        showPopup();
         initMap(coords, vehicles);
       });
     });
@@ -126,7 +130,7 @@ $(() => {
   // Init
   hidePopup();
 
-  document.getElementById('popup').addEventListener('click', hidePopup);
+  popup.addEventListener('click', hidePopup);
   document.getElementById('popup-1').addEventListener('click', e => e.stopPropagation());
 
   ['range_smell', 'range_driver', 'range_clean'].forEach(id => {

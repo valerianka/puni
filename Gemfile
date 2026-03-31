@@ -11,9 +11,6 @@ gem 'bootstrap-sass'
 gem 'will_paginate', '~> 3.3'
 gem 'betterlorem', '~> 0.1.2'
 gem 'bootstrap-will_paginate', '~> 0.0.10'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
 # Build JSON APIs with ease.
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
