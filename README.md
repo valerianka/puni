@@ -42,6 +42,17 @@ bundle exec rails test:system
 - `MUNI_511_API_KEY` — 511.org API key for live bus data. Without it the app uses mock bus data.
 - `GOOGLE_MAPS_API_KEY` — required for the map to render.
 
+## Contributing
+
+The local setup above is the quickest way to get started. Once you have the app running:
+
+1. Fork the repo and create a branch for your change
+2. Write tests for new functionality
+3. Make sure `bundle exec rails test` passes
+4. Open a pull request against `master`
+
+Bug reports and feature suggestions are welcome via GitHub Issues.
+
 Future development
 -------
 - Upload photos and videos as part of your rating.
