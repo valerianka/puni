@@ -8,10 +8,7 @@ class Muni < ActiveRecord::Base
 
   class << self
     def sorted_munis
-      munis = Muni.all
-      munis.sort do |muni1, muni2|
-        muni2.average_sum - muni1.average_sum
-      end
+      order(Arel.sql('(avg_smell_rating + avg_clean_rating + avg_driver_rating) DESC'))
     end
   end
 
@@ -20,9 +17,8 @@ class Muni < ActiveRecord::Base
   end
 
   def average_of(attr)
-    return 1 if reports.empty?
-
-    (reports.inject(0.0) { |sum, r| sum + r.send(attr) } / reports.count).round
+    avg = reports.average(attr)
+    avg ? avg.round : 1
   end
 
   def average_sum

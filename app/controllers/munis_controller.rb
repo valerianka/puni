@@ -7,7 +7,7 @@ class MunisController < ApplicationController
   end
 
   def show
-    muni = Muni.find_or_create_by(route_name: params.require(:route_name))
+    muni = find_or_create_muni
     report = muni.reports.build(report_params)
     unless report.save
       flash[:danger] = 'Invalid ratings. Each must be a number from 1 to 5.'
@@ -54,6 +54,13 @@ class MunisController < ApplicationController
   end
 
   private
+
+  def find_or_create_muni
+    route_name = params.require(:route_name)
+    Muni.find_or_create_by(route_name: route_name)
+  rescue ActiveRecord::RecordNotUnique
+    Muni.find_by!(route_name: route_name)
+  end
 
   def report_params
     params.permit(:smell_rating, :clean_rating, :driver_rating)
