@@ -7,9 +7,22 @@
 # Ignore bundler config.
 /.bundle
 
+# Local bundler gem installation (BUNDLE_PATH=.)
+/gems/
+/ruby/
+/cache/
+/extensions/
+/specifications/
+/build_info/
+/plugins/
+/wrappers/
+/doc/
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/db/*.sqlite3-shm
+/db/*.sqlite3-wal
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -21,3 +34,6 @@
 
 #Ignore secrets.yml
 /config/secrets.yml
+
+# Claude Code internal workspace
+/.claude/
