@@ -52,21 +52,30 @@ $(document).ready(function(){
   };
 
   var processBusLocations = function(coords, completionHandler){
+    iphoneDebug('Fetching vehicles...');
     $.ajax({
       url: "/munis/vehicles",
     }).done(function(data){
-      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       var vehicles = data.items;
-      console.log(vehicles.length);
-      iphoneDebug('Vehicles loaded: ' + vehicles.length + ', nearest: ' + (vehicles[0] && vehicles[0].route_id));
+      if (!vehicles || vehicles.length === 0) {
+        iphoneDebug('No vehicles returned from API');
+        return;
+      }
+      iphoneDebug('Vehicles: ' + vehicles.length);
+      var uniqueVehiclesArray = formUniqueVehiclesArray(sortedVehiclesArray(data));
       vehicles.sort(function(a, b){
         return distanceBetweenPoints(a, coords) - distanceBetweenPoints(b, coords);
       });
+      var nearest = vehicles[0];
+      var dist = distanceBetweenPoints(nearest, coords);
+      iphoneDebug('Nearest: ' + nearest.route_id + ' dist=' + dist.toFixed(4) + ' (bus ' + nearest.latitude.toFixed(4) + ',' + nearest.longitude.toFixed(4) + ')');
       // TODO: restore distance check for production (< 0.003 degrees ≈ 300m)
-      // if (distanceBetweenPoints(vehicles[0], coords) < 0.003) {
-      getAverages(vehicles[0].route_id);
+      // if (dist < 0.003) {
+      getAverages(nearest.route_id);
       // } else setDefaultImages();
       completionHandler(vehicles);
+    }).fail(function(xhr, status, err) {
+      iphoneDebug('Vehicles AJAX failed: ' + status + ' ' + err + ' (' + xhr.status + ')');
     });
   };
 
@@ -182,6 +191,7 @@ $(document).ready(function(){
   };
 
   var getAverages = function(name){
+    iphoneDebug('Getting averages for: ' + name);
     $.ajax({
       url: '/munis/' + name + '/average'
     }).done(function(content){
@@ -196,6 +206,9 @@ $(document).ready(function(){
       $('#route_name').val(name);
       document.getElementById('route_name_tag').innerHTML = name;
       document.getElementById('submit-btn').disabled = false;
+      iphoneDebug('Route set: ' + name);
+    }).fail(function(xhr, status, err) {
+      iphoneDebug('Averages AJAX failed: ' + status + ' ' + err + ' (' + xhr.status + ')');
     });
   };
 
